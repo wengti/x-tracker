@@ -5,6 +5,8 @@ type Props = {
   opponentScore: number;
   isYourFriend: boolean;
   onToggleYourFriend: () => void;
+  youBeyName?: string;
+  opponentBeyName?: string;
 };
 
 export default function Scoreboard({
@@ -12,6 +14,8 @@ export default function Scoreboard({
   opponentScore,
   isYourFriend,
   onToggleYourFriend,
+  youBeyName,
+  opponentBeyName,
 }: Props) {
   const youLeading = youScore > opponentScore;
   const oppLeading = opponentScore > youScore;
@@ -22,10 +26,11 @@ export default function Scoreboard({
         label={isYourFriend ? "Your Friend" : "You"}
         score={youScore}
         highlight={youLeading}
+        beyName={youBeyName}
         toggle={<Toggle isOn={isYourFriend} onToggle={onToggleYourFriend} />}
       />
       <span className="text-base font-bold text-neutral-700 sm:text-xl">vs</span>
-      <ScorePanel label="Opponent" score={opponentScore} highlight={oppLeading} />
+      <ScorePanel label="Opponent" score={opponentScore} highlight={oppLeading} beyName={opponentBeyName} />
     </div>
   );
 }
@@ -34,11 +39,13 @@ function ScorePanel({
   label,
   score,
   highlight,
+  beyName,
   toggle,
 }: {
   label: string;
   score: number;
   highlight: boolean;
+  beyName?: string;
   toggle?: React.ReactNode;
 }) {
   return (
@@ -62,6 +69,11 @@ function ScorePanel({
       >
         {score}
       </span>
+      {beyName && (
+        <span className="max-w-full truncate text-center text-xs text-neutral-500">
+          {beyName}
+        </span>
+      )}
     </div>
   );
 }

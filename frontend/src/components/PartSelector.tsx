@@ -71,7 +71,7 @@ export default function PartSelector({ label, value, onChange, options }: Props)
           className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-white placeholder:text-neutral-600 focus:border-blue-500 focus:outline-none"
         />
         {open && (
-          <ul className="absolute left-0 right-0 top-full z-10 mt-1 max-h-48 overflow-auto rounded-lg border border-neutral-700 bg-neutral-900 shadow-xl">
+          <ul className="scrollbar-blue absolute left-0 top-full z-10 mt-1 max-h-48 min-w-full w-max overflow-y-auto rounded-lg border border-neutral-700 bg-neutral-900 shadow-xl">
             {filtered.length > 0 ? (
               filtered.map((part) => (
                 <li key={part.name}>
@@ -95,7 +95,7 @@ export default function PartSelector({ label, value, onChange, options }: Props)
                         />
                       </div>
                     )}
-                    {part.name}
+                    <span className="whitespace-nowrap">{part.name}</span>
                   </button>
                 </li>
               ))

@@ -4,7 +4,8 @@ import { useState } from "react";
 import Scoreboard from "@/components/Scoreboard";
 import FinishButtons from "@/components/FinishButtons";
 import BeySetupPanel from "@/components/BeySetupPanel";
-import { type BeySetup, DEFAULT_BEY_SETUP } from "@/types/bey";
+import BeyPicker from "@/components/BeyPicker";
+import { type BeySetup, DEFAULT_BEY_SETUP, getBeyName } from "@/types/bey";
 
 type Score = { you: number; opponent: number };
 
@@ -14,6 +15,8 @@ export default function OneVsOnePage() {
   const [isYourFriend, setIsYourFriend] = useState(false);
   const [youSetup, setYouSetup] = useState<BeySetup>(DEFAULT_BEY_SETUP);
   const [opponentSetup, setOpponentSetup] = useState<BeySetup>(DEFAULT_BEY_SETUP);
+  const [selectedYouBey, setSelectedYouBey] = useState(0);
+  const [selectedOpponentBey, setSelectedOpponentBey] = useState(0);
 
   function addPoints(side: "you" | "opponent", points: number) {
     setScore((prev) => ({ ...prev, [side]: prev[side] + points }));
@@ -59,17 +62,37 @@ export default function OneVsOnePage() {
           </div>
         </section>
 
-        {/* 2. Scoreboard */}
+        {/* 2. Bey Selection */}
+        <section aria-label="Bey Selection">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <BeyPicker
+              label="Your Bey"
+              setups={[youSetup]}
+              selectedIndex={selectedYouBey}
+              onSelect={setSelectedYouBey}
+            />
+            <BeyPicker
+              label="Opponent's Bey"
+              setups={[opponentSetup]}
+              selectedIndex={selectedOpponentBey}
+              onSelect={setSelectedOpponentBey}
+            />
+          </div>
+        </section>
+
+        {/* 3. Scoreboard */}
         <section aria-label="Scoreboard">
           <Scoreboard
             youScore={score.you}
             opponentScore={score.opponent}
             isYourFriend={isYourFriend}
             onToggleYourFriend={() => setIsYourFriend((v) => !v)}
+            youBeyName={getBeyName([youSetup][selectedYouBey])}
+            opponentBeyName={getBeyName([opponentSetup][selectedOpponentBey])}
           />
         </section>
 
-        {/* 3. Finish Buttons */}
+        {/* 4. Finish Buttons */}
         <section aria-label="Finish Buttons">
           <div className="grid grid-cols-2 gap-3 sm:gap-6">
             <FinishButtons side="you" onFinish={(pts) => addPoints("you", pts)} disabled={roundLocked} />
@@ -77,7 +100,7 @@ export default function OneVsOnePage() {
           </div>
         </section>
 
-        {/* 4. Submit / Clear */}
+        {/* 5. Submit / Clear */}
         <section aria-label="Actions">
           <div className="flex gap-3">
             <button

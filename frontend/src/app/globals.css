@@ -8,3 +8,21 @@
   --header-height: 3.5rem;
   --footer-height: 3.5rem;
 }
+
+.scrollbar-blue {
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 transparent;
+}
+.scrollbar-blue::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-blue::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-blue::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 9999px;
+}
+.scrollbar-blue::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa;
+}
