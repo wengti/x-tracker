@@ -70,7 +70,7 @@ function ScorePanel({
         {score}
       </span>
       {beyName && (
-        <span className="max-w-full truncate text-center text-xs text-neutral-500">
+        <span className="text-center text-xs text-neutral-500">
           {beyName}
         </span>
       )}
