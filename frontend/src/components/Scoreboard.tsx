@@ -3,15 +3,15 @@
 type Props = {
   youScore: number;
   opponentScore: number;
-  isMyFriend: boolean;
-  onToggleMyFriend: () => void;
+  isYourFriend: boolean;
+  onToggleYourFriend: () => void;
 };
 
 export default function Scoreboard({
   youScore,
   opponentScore,
-  isMyFriend,
-  onToggleMyFriend,
+  isYourFriend,
+  onToggleYourFriend,
 }: Props) {
   const youLeading = youScore > opponentScore;
   const oppLeading = opponentScore > youScore;
@@ -19,10 +19,10 @@ export default function Scoreboard({
   return (
     <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-6">
       <ScorePanel
-        label={isMyFriend ? "My Friend" : "You"}
+        label={isYourFriend ? "Your Friend" : "You"}
         score={youScore}
         highlight={youLeading}
-        toggle={<Toggle isOn={isMyFriend} onToggle={onToggleMyFriend} />}
+        toggle={<Toggle isOn={isYourFriend} onToggle={onToggleYourFriend} />}
       />
       <span className="text-base font-bold text-neutral-700 sm:text-xl">vs</span>
       <ScorePanel label="Opponent" score={opponentScore} highlight={oppLeading} />
@@ -72,7 +72,7 @@ function Toggle({ isOn, onToggle }: { isOn: boolean; onToggle: () => void }) {
       onClick={onToggle}
       role="switch"
       aria-checked={isOn}
-      aria-label="Toggle between You and My Friend"
+      aria-label="Toggle between You and Your Friend"
       className={`flex h-4 w-7 shrink-0 items-center rounded-full p-0.5 transition-colors ${
         isOn ? "bg-blue-500" : "bg-neutral-600"
       }`}
