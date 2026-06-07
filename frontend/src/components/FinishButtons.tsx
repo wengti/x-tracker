@@ -39,7 +39,7 @@ export default function FinishButtons({ side, onFinish, disabled = false }: Prop
             key={label}
             disabled={disabled}
             onClick={() => onFinish(points)}
-            className={`flex flex-col items-center gap-1 rounded-xl border bg-neutral-900 px-3 py-4 transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 ${style}`}
+            className={`flex flex-col justify-center items-center gap-1 rounded-xl border bg-neutral-900 px-3 py-4 transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 ${style}`}
           >
             <span className="text-sm font-semibold">{label}</span>
             <span className="text-xs font-bold opacity-60">+{points}</span>
