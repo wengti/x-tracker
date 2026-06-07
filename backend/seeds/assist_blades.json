@@ -1,0 +1,70 @@
+[
+  {
+    "name": "Assault",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/24/AssistBladeAssault.png/revision/latest?cb=20250613042027"
+  },
+  {
+    "name": "Bumper",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/a/aa/AssistBladeBumper.png/revision/latest?cb=20250215050654"
+  },
+  {
+    "name": "Charge",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/8/89/AssistBladeCharge.png/revision/latest?cb=20250314041928"
+  },
+  {
+    "name": "Dual",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/7/7e/AssistBladeDual_%28Upper_Mode%29.png/revision/latest?cb=20250812023514"
+  },
+  {
+    "name": "Erase",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/0/0c/AssistBladeErase.png/revision/latest?cb=20260214043159"
+  },
+  {
+    "name": "Free",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/b/be/AssistBladeFree.png/revision/latest?cb=20251015205027"
+  },
+  {
+    "name": "Heavy",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/0/0b/AssistBladeHeavy.png/revision/latest?cb=20251015205145"
+  },
+  {
+    "name": "Jaggy",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/1/14/AssistBladeJaggy.png/revision/latest?cb=20250415032856"
+  },
+  {
+    "name": "Knuckle",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/1/11/AssistBladeKnuckle.png/revision/latest?cb=20260214040432"
+  },
+  {
+    "name": "Massive",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/23/AssistBladeMassive.png/revision/latest?cb=20250613042947"
+  },
+  {
+    "name": "Odd",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/8/85/AssistBladeOdd.png/revision/latest?cb=20260415025441"
+  },
+  {
+    "name": "Round",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/3/3c/AssistBladeRound.png/revision/latest?cb=20250215050554"
+  },
+  {
+    "name": "Slash",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/cb/AssistBladeSlash.png/revision/latest?cb=20250215050454"
+  },
+  {
+    "name": "Turn",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/2c/AssistBladeTurn.png/revision/latest?cb=20250314041629"
+  },
+  {
+    "name": "Vertical",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/6/65/AssistBladeVertical.png/revision/latest?cb=20260214040558"
+  },
+  {
+    "name": "Wheel",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/3/3d/AssistBladeWheel.png/revision/latest?cb=20250613042109"
+  },
+  {
+    "name": "Zillion",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/3/37/AssistBladeZillion.png/revision/latest?cb=20260115043035"
+  }
+]

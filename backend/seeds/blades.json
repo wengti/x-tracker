@@ -1,0 +1,482 @@
+[
+  {
+    "name": "AeroPegasus",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/5/58/BladeAeroPegasus.png/revision/latest?cb=20250528202546"
+  },
+  {
+    "name": "Astral",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/9c/BladeAstral.png/revision/latest?cb=20210715041907"
+  },
+  {
+    "name": "Berserk",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/a/aa/BladeBerserkRender.png/revision/latest?cb=20221210015616"
+  },
+  {
+    "name": "Bite Croc",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/97/Bite_Croc_3-60LF.jpeg/revision/latest?cb=20241003085305"
+  },
+  {
+    "name": "BlackShell",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/3/3c/BladeBlackShell.png/revision/latest?cb=20250528201216"
+  },
+  {
+    "name": "Bumblebee",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/a/aa/Bumblebee_3-60GP.jpeg/revision/latest?cb=20250821194720"
+  },
+  {
+    "name": "Captain America",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/8/8d/Captain_America_4-70GB.jpeg/revision/latest?cb=20250618034930"
+  },
+  {
+    "name": "Chewbacca",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/3/3f/Chewbacca_4-80LF.jpeg/revision/latest?cb=20250903053227"
+  },
+  {
+    "name": "ClockMirage",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/7/7c/BladeClockMirage.png/revision/latest?cb=20250912034434"
+  },
+  {
+    "name": "CobaltDragoon",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/c2/BladeCobaltDragoon.png/revision/latest?cb=20250528202711"
+  },
+  {
+    "name": "CobaltDrake",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/2f/BladeCobaltDrake.png/revision/latest?cb=20250528202030"
+  },
+  {
+    "name": "CrimsonGaruda",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/6/60/BladeCrimsonGaruda.png/revision/latest?cb=20241015052049"
+  },
+  {
+    "name": "Cyclone",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/f/f7/BladeCyclone.png/revision/latest?cb=20210315113321"
+  },
+  {
+    "name": "Dangerous",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/e/e6/BladeDangerous.png/revision/latest?cb=20210915033805"
+  },
+  {
+    "name": "Darth Vader",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/b/bb/Darth_Vader_4-60P.jpeg/revision/latest?cb=20240729053041"
+  },
+  {
+    "name": "Decay",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/93/BladeDecayRender.png/revision/latest?cb=20221208072927"
+  },
+  {
+    "name": "Destruction",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/1/1b/BladeDestructionRender.png/revision/latest?cb=20221207220527"
+  },
+  {
+    "name": "Devastate",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/5/5c/BladeDevastateRender.png/revision/latest?cb=20220531060500"
+  },
+  {
+    "name": "Devil",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/3/34/BladeDevil.png/revision/latest?cb=20210615013725"
+  },
+  {
+    "name": "DracielShield",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/7/79/BladeDracielShield.png/revision/latest?cb=20241202045350"
+  },
+  {
+    "name": "DragoonStorm",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/c4/BladeDragoonStorm.png/revision/latest?cb=20251114045923"
+  },
+  {
+    "name": "DranBuster",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/d/db/BladeDranBuster.png/revision/latest?cb=20250528202327"
+  },
+  {
+    "name": "DranDagger",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/c8/BladeDranDagger.png/revision/latest?cb=20250528202141"
+  },
+  {
+    "name": "DranStrike",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/6/67/BladeDranStrike.png/revision/latest?cb=20260313031347"
+  },
+  {
+    "name": "DranSword",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/5/5f/BladeDranSword.png/revision/latest?cb=20250814202546"
+  },
+  {
+    "name": "DranzerSpiral",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/ce/BladeDranzerSpiral.png/revision/latest?cb=20230807194254"
+  },
+  {
+    "name": "DrigerSlash",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/c5/BladeDrigerSlash.png/revision/latest?cb=20240322182711"
+  },
+  {
+    "name": "Dynamite",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/cd/BladeDynamite.png/revision/latest?cb=20210315113258"
+  },
+  {
+    "name": "General Grievous",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/5/5e/General_Grievous_3-80HN.jpeg/revision/latest?cb=20250618035039"
+  },
+  {
+    "name": "GhostCircle",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/7/7a/BladeGhostCircle.png/revision/latest?cb=20241115025132"
+  },
+  {
+    "name": "Gilded",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/20/BladeGildedRender.png/revision/latest?cb=20221208202041"
+  },
+  {
+    "name": "Gill Shark",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/3/3b/Gill_Shark_4-70O.jpeg/revision/latest?cb=20250820040436"
+  },
+  {
+    "name": "Glory",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/5/5f/BladeGloryRender.png/revision/latest?cb=20221205075102"
+  },
+  {
+    "name": "GolemRock",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/27/BladeGolemRock.png/revision/latest?cb=20250115052241"
+  },
+  {
+    "name": "Green Goblin",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/95/Green_Goblin_9-80HT.jpeg/revision/latest?cb=20250903053921"
+  },
+  {
+    "name": "Grogu",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/6/6c/BladeGrogu.png/revision/latest?cb=20260511121015"
+  },
+  {
+    "name": "Guilty",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/4/46/BladeGuilty.png/revision/latest?cb=20210812041847"
+  },
+  {
+    "name": "Gust Bat",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/22/Gust_Bat_3-85GP.jpg/revision/latest?cb=20260429060917"
+  },
+  {
+    "name": "Hack Viking",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/0/02/BladeHackViking.png/revision/latest?cb=20260218010839"
+  },
+  {
+    "name": "HellsChain",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/8/83/BladeHellsChain.png/revision/latest?cb=20250528203625"
+  },
+  {
+    "name": "HellsHammer",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/6/67/BladeHellsHammer.png/revision/latest?cb=20240215060611"
+  },
+  {
+    "name": "HellsScythe",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/e/e4/BladeHellsScythe.png/revision/latest?cb=20250817035337"
+  },
+  {
+    "name": "Hover Wyvern",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/7/71/Hover_Wyvern_3-85N.jpeg/revision/latest?cb=20250612062923"
+  },
+  {
+    "name": "ImpactDrake",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/b/b1/BladeImpactDrake.png/revision/latest?cb=20241115024018"
+  },
+  {
+    "name": "Iron Man",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/c8/Iron_Man_4-80B.jpeg/revision/latest?cb=20240729052810"
+  },
+  {
+    "name": "Katana",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/c6/BladeKatanaRender.png/revision/latest?cb=20220402045455"
+  },
+  {
+    "name": "Knife Shinobi",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/25/BladeKnifeShinobi.png/revision/latest?cb=20250815182407"
+  },
+  {
+    "name": "KnightLance",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/cb/BladeKnightLance.png/revision/latest?cb=20230808063816"
+  },
+  {
+    "name": "KnightMail",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/f/fc/BladeKnightMail.png/revision/latest?cb=20241015034144"
+  },
+  {
+    "name": "KnightShield",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/9c/BladeKnightShield.png/revision/latest?cb=20250609060142"
+  },
+  {
+    "name": "LeonClaw",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/93/BladeLeonClaw.png/revision/latest?cb=20230918165658"
+  },
+  {
+    "name": "LeonCrest",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/c7/BladeLeonCrest.png/revision/latest?cb=20240712055426"
+  },
+  {
+    "name": "Lightning L-Drago (Rapid-Hit Type)",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/5/5b/BladeLightningL-Drago%28Rapid-HitType%29.png/revision/latest?cb=20240809163229"
+  },
+  {
+    "name": "Lightning L-Drago (Upper Type)",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/d/d0/BladeLightningL-Drago%28UpperType%29.png/revision/latest?cb=20240809163223"
+  },
+  {
+    "name": "Luke Skywalker",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/a/a0/Luke_Skywalker_4-80B.jpeg/revision/latest?cb=20240729053007"
+  },
+  {
+    "name": "Magma",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/7/70/BladeMagmaRender.png/revision/latest?cb=20221207223659"
+  },
+  {
+    "name": "Megatron",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/97/Megatron_4-80B.jpeg/revision/latest?cb=20240514171132"
+  },
+  {
+    "name": "MeteorDragoon",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/b/b7/BladeMeteorDragoon.png/revision/latest?cb=20251114032400"
+  },
+  {
+    "name": "Miles Morales",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/1/19/Miles_Morales_1-60GN.jpeg/revision/latest?cb=20250903053908"
+  },
+  {
+    "name": "Moff Gideon",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/6/6f/Moff_Gideon_3-80N.jpeg/revision/latest?cb=20240729052534"
+  },
+  {
+    "name": "MummyCurse",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/a/ab/BladeMummyCurse.png/revision/latest?cb=20251114034130"
+  },
+  {
+    "name": "Obi-Wan Kenobi",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/b/ba/Obi-Wan_Kenobi_4-60P.jpeg/revision/latest?cb=20250618035030"
+  },
+  {
+    "name": "Optimus Primal",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/9a/Optimus_Primal_3-60F.jpeg/revision/latest?cb=20240514171819"
+  },
+  {
+    "name": "Optimus Prime",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/20/Optimus_Prime_4-60P.jpeg/revision/latest?cb=20240514171126"
+  },
+  {
+    "name": "OrochiCluster",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/d/d0/BladeOrochiCluster.png/revision/latest?cb=20260121134642"
+  },
+  {
+    "name": "PhoenixFeather",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/96/BladePhoenixFeather.png/revision/latest?cb=20231207074705"
+  },
+  {
+    "name": "PhoenixRudder",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/0/0f/BladePhoenixRudder.png/revision/latest?cb=20250528203411"
+  },
+  {
+    "name": "PhoenixWing",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/2d/BladePhoenixWing.png/revision/latest?cb=20231115091927"
+  },
+  {
+    "name": "Prominence",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/b/bc/BladeProminence.png/revision/latest?cb=20210915033819"
+  },
+  {
+    "name": "Red Hulk",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/e/ed/Red_Hulk_1-80R.jpeg/revision/latest?cb=20250618034946"
+  },
+  {
+    "name": "RhinoHorn",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/4/41/BladeRhinoHorn.png/revision/latest?cb=20250528201123"
+  },
+  {
+    "name": "Ring Aether",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/e/e5/BladeRingAether.png/revision/latest?cb=20260511081738"
+  },
+  {
+    "name": "Roar",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/5/58/BladeRoar.png/revision/latest?cb=20210615062559"
+  },
+  {
+    "name": "Roar Tyranno",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/5/5e/Roar_Tyranno_9-60GF.jpeg/revision/latest?cb=20241003084111"
+  },
+  {
+    "name": "Rock Leone",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/a/a2/BladeRockLeone.png/revision/latest?cb=20250719051128"
+  },
+  {
+    "name": "Salvage",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/7/76/BladeSalvageRender.png/revision/latest?cb=20221208075547"
+  },
+  {
+    "name": "SamuraiCalibur",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/a/ab/BladeSamuraiCalibur.png/revision/latest?cb=20250715051328"
+  },
+  {
+    "name": "SamuraiSaber",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/d/de/BladeSamuraiSaber.png/revision/latest?cb=20241015033005"
+  },
+  {
+    "name": "Savage Bear",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/7/7f/Savage_Bear_3-60S.jpg/revision/latest?cb=20241003084229"
+  },
+  {
+    "name": "Savior",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/4/43/BladeSavior.png/revision/latest?cb=20210615063345"
+  },
+  {
+    "name": "ScorpioSpear",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/8/89/BladeScorpioSpear.png/revision/latest?cb=20250614081207"
+  },
+  {
+    "name": "SharkEdge",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/2e/BladeSharkEdge.png/revision/latest?cb=20230812203549"
+  },
+  {
+    "name": "SharkScale",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/e/e0/BladeSharkScale.png/revision/latest?cb=20250715051433"
+  },
+  {
+    "name": "Shatter Horus",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/8/8b/BladeShatterHorus.png/revision/latest?cb=20260604235606"
+  },
+  {
+    "name": "ShelterDrake",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/8/89/BladeShelterDrake.png/revision/latest?cb=20250530222732"
+  },
+  {
+    "name": "ShinobiShadow",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/4/48/BladeShinobiShadow.png/revision/latest?cb=20250528201917"
+  },
+  {
+    "name": "Shockwave",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/1/19/Shockwave_5-80O.jpeg/revision/latest?cb=20250821194729"
+  },
+  {
+    "name": "SilverWolf",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/f/f1/BladeSilverWolf.png/revision/latest?cb=20240913034202"
+  },
+  {
+    "name": "SphinxCowl",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/3/31/BladeSphinxCowl.png/revision/latest?cb=20250528201304"
+  },
+  {
+    "name": "Spider-Man",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/4/4e/Spider-Man_3-60F.jpeg/revision/latest?cb=20240729053252"
+  },
+  {
+    "name": "Starscream",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/c1/Starscream_3-80N.jpeg/revision/latest?cb=20240514171842"
+  },
+  {
+    "name": "Steel Samurai",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/f/fb/Steel_Samurai_4-80T.jpeg/revision/latest?cb=20240515224953"
+  },
+  {
+    "name": "Stone",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/8/80/BladeStoneRender.png/revision/latest?cb=20221210040941"
+  },
+  {
+    "name": "StormPegasis",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/2/2a/StormPegasis_3-70RA.jpeg/revision/latest?cb=20240717033658"
+  },
+  {
+    "name": "StormSpriggan",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/6/64/BladeStormSpriggan.png/revision/latest?cb=20260322045727"
+  },
+  {
+    "name": "Stormtrooper",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/1/14/Stormtrooper_5-70B.jpeg/revision/latest?cb=20250903053236"
+  },
+  {
+    "name": "Stun Medusa",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/d/dd/Stun_Medusa_9-60GB.jpeg/revision/latest?cb=20260130180405"
+  },
+  {
+    "name": "Tackle Goat",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/c/cd/Tackle_Goat_2-70N.jpeg/revision/latest?cb=20250815160707"
+  },
+  {
+    "name": "Talon Ptera",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/f/f8/Talon_Ptera_3-80B.jpeg/revision/latest?cb=20240630193118"
+  },
+  {
+    "name": "Thanos",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/a/af/Thanos_4-60P.jpeg/revision/latest?cb=20240729052849"
+  },
+  {
+    "name": "The Mandalorian",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/96/The_Mandalorian_3-60F.jpeg/revision/latest?cb=20240729052605"
+  },
+  {
+    "name": "TriceraPress",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/4/48/BladeTriceraPress.png/revision/latest?cb=20250515033251"
+  },
+  {
+    "name": "TriceraSpiky",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/7/78/BladeTriceraSpiky.png/revision/latest?cb=20260207193346"
+  },
+  {
+    "name": "Trypio",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/e/e7/Trypio_3-60N.png/revision/latest?cb=20240129174146"
+  },
+  {
+    "name": "Tusk Mammoth",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/e/e2/Tusk_Mammoth_3-60T.jpeg/revision/latest?cb=20240321181854"
+  },
+  {
+    "name": "TyrannoBeat",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/f/ff/BladeTyrannoBeat.png/revision/latest?cb=20240415173927"
+  },
+  {
+    "name": "Ultimate",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/5/5b/BladeUltimate.png/revision/latest?cb=20211115060711"
+  },
+  {
+    "name": "UnicornSting",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/1/15/BladeUnicornSting.png/revision/latest?cb=20240115194629"
+  },
+  {
+    "name": "Vanish",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/5/5c/BladeVanish.png/revision/latest?cb=20210514115222"
+  },
+  {
+    "name": "Venom",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/f/fb/Venom_3-80N.jpeg/revision/latest?cb=20240729052728"
+  },
+  {
+    "name": "VictoryValkyrie",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/6/6b/VictoryValkyrie_2-60RA.jpeg/revision/latest?cb=20240717033721"
+  },
+  {
+    "name": "ViperTail",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/9/9d/BladeViperTail.png/revision/latest?cb=20250818205656"
+  },
+  {
+    "name": "WeissTiger",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/3/37/BladeWeissTiger.png/revision/latest?cb=20240515052303"
+  },
+  {
+    "name": "WhaleWave",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/8/89/BladeWhaleWave.png/revision/latest?cb=20240812022438"
+  },
+  {
+    "name": "WizardArrow",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/4/44/BladeWizardArrow.png/revision/latest?cb=20250626062049"
+  },
+  {
+    "name": "WizardRod",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/a/a3/BladeWizardRod.png/revision/latest?cb=20240222003334"
+  },
+  {
+    "name": "Wrath",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/d/d5/BladeWrathRender.png/revision/latest?cb=20221210013244"
+  },
+  {
+    "name": "WyvernGale",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/3/3d/BladeWyvernGale.png/revision/latest?cb=20231115091914"
+  },
+  {
+    "name": "XenoXcalibur",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/b/bb/BladeXenoXcalibur.png/revision/latest?cb=20250322231907"
+  },
+  {
+    "name": "Yell Kong",
+    "image_url": "https://static.wikia.nocookie.net/beyblade/images/0/03/Yell_Kong_3-60GB.jpeg/revision/latest?cb=20241003085621"
+  }
+]
