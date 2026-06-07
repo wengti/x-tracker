@@ -1,12 +1,13 @@
 1. Scrape data - including name and picture
 - save into text file
 
+done
+
 2. Create frontend
 
 PART I: one bey only
 - left side is you
 - right side is your opponent
-- each time a finish button is clicked, a row appear below it to show finish history
 - submit button to submit result
     * this hits 1v1 match
 - clear button to clear result

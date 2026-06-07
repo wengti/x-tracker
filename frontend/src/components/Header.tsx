@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import NavLinks from "./NavLinks";
 
 export default function Header() {
   return (
@@ -17,9 +18,7 @@ export default function Header() {
             X <span className="text-blue-400">Tracker</span>
           </span>
         </Link>
-        <nav className="flex items-center gap-6 text-sm font-medium text-neutral-400">
-          {/* Navigation links will be added as routes are built */}
-        </nav>
+        <NavLinks />
       </div>
     </header>
   );
