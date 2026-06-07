@@ -9,6 +9,7 @@ type Score = { you: number; opponent: number };
 export default function OneVsOnePage() {
   const [score, setScore] = useState<Score>({ you: 0, opponent: 0 });
   const [roundLocked, setRoundLocked] = useState(false);
+  const [isMyFriend, setIsMyFriend] = useState(false);
 
   function addPoints(side: "you" | "opponent", points: number) {
     setScore((prev) => ({ ...prev, [side]: prev[side] + points }));
@@ -16,7 +17,7 @@ export default function OneVsOnePage() {
   }
 
   function handleSubmit() {
-    // TODO: send match result to backend
+    // TODO: if !isMyFriend, send match result to backend
     setScore({ you: 0, opponent: 0 });
     setRoundLocked(false);
   }
@@ -43,7 +44,12 @@ export default function OneVsOnePage() {
 
         {/* 2. Scoreboard */}
         <section aria-label="Scoreboard">
-          <Scoreboard youScore={score.you} opponentScore={score.opponent} />
+          <Scoreboard
+            youScore={score.you}
+            opponentScore={score.opponent}
+            isMyFriend={isMyFriend}
+            onToggleMyFriend={() => setIsMyFriend((v) => !v)}
+          />
         </section>
 
         {/* 3. Finish Buttons */}

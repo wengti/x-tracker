@@ -1,15 +1,29 @@
+'use client'
+
 type Props = {
   youScore: number;
   opponentScore: number;
+  isMyFriend: boolean;
+  onToggleMyFriend: () => void;
 };
 
-export default function Scoreboard({ youScore, opponentScore }: Props) {
+export default function Scoreboard({
+  youScore,
+  opponentScore,
+  isMyFriend,
+  onToggleMyFriend,
+}: Props) {
   const youLeading = youScore > opponentScore;
   const oppLeading = opponentScore > youScore;
 
   return (
     <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-6">
-      <ScorePanel label="You" score={youScore} highlight={youLeading} />
+      <ScorePanel
+        label={isMyFriend ? "My Friend" : "You"}
+        score={youScore}
+        highlight={youLeading}
+        toggle={<Toggle isOn={isMyFriend} onToggle={onToggleMyFriend} />}
+      />
       <span className="text-base font-bold text-neutral-700 sm:text-xl">vs</span>
       <ScorePanel label="Opponent" score={opponentScore} highlight={oppLeading} />
     </div>
@@ -20,10 +34,12 @@ function ScorePanel({
   label,
   score,
   highlight,
+  toggle,
 }: {
   label: string;
   score: number;
   highlight: boolean;
+  toggle?: React.ReactNode;
 }) {
   return (
     <div
@@ -33,9 +49,12 @@ function ScorePanel({
           : "border-neutral-800 bg-neutral-900"
       }`}
     >
-      <span className="text-xs font-semibold uppercase tracking-widest text-neutral-400">
-        {label}
-      </span>
+      <div className="flex items-center gap-1.5">
+        {toggle}
+        <span className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
+          {label}
+        </span>
+      </div>
       <span
         className={`text-6xl font-black tabular-nums leading-none transition-colors duration-300 sm:text-9xl ${
           highlight ? "text-blue-300" : "text-white"
@@ -44,5 +63,25 @@ function ScorePanel({
         {score}
       </span>
     </div>
+  );
+}
+
+function Toggle({ isOn, onToggle }: { isOn: boolean; onToggle: () => void }) {
+  return (
+    <button
+      onClick={onToggle}
+      role="switch"
+      aria-checked={isOn}
+      aria-label="Toggle between You and My Friend"
+      className={`flex h-4 w-7 shrink-0 items-center rounded-full p-0.5 transition-colors ${
+        isOn ? "bg-blue-500" : "bg-neutral-600"
+      }`}
+    >
+      <span
+        className={`h-3 w-3 rounded-full bg-white shadow transition-transform ${
+          isOn ? "translate-x-3" : "translate-x-0"
+        }`}
+      />
+    </button>
   );
 }
