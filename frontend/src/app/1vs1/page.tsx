@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Scoreboard from "@/components/Scoreboard";
 import FinishButtons from "@/components/FinishButtons";
+import BeySetupPanel from "@/components/BeySetupPanel";
+import { type BeySetup, DEFAULT_BEY_SETUP } from "@/types/bey";
 
 type Score = { you: number; opponent: number };
 
@@ -10,6 +12,8 @@ export default function OneVsOnePage() {
   const [score, setScore] = useState<Score>({ you: 0, opponent: 0 });
   const [roundLocked, setRoundLocked] = useState(false);
   const [isYourFriend, setIsYourFriend] = useState(false);
+  const [youSetup, setYouSetup] = useState<BeySetup>(DEFAULT_BEY_SETUP);
+  const [opponentSetup, setOpponentSetup] = useState<BeySetup>(DEFAULT_BEY_SETUP);
 
   function addPoints(side: "you" | "opponent", points: number) {
     setScore((prev) => ({ ...prev, [side]: prev[side] + points }));
@@ -39,8 +43,21 @@ export default function OneVsOnePage() {
           <p className="mt-1 text-sm text-neutral-500">Record your test matchups</p>
         </div>
 
-        {/* 1. Bey Setups — coming soon */}
-        <section aria-label="Bey Setups" />
+        {/* 1. Bey Setups */}
+        <section aria-label="Bey Setups">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <BeySetupPanel
+              label="Your Bey"
+              setup={youSetup}
+              onSetupChange={setYouSetup}
+            />
+            <BeySetupPanel
+              label="Opponent's Bey"
+              setup={opponentSetup}
+              onSetupChange={setOpponentSetup}
+            />
+          </div>
+        </section>
 
         {/* 2. Scoreboard */}
         <section aria-label="Scoreboard">
