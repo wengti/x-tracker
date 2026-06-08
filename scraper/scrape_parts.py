@@ -143,10 +143,37 @@ def save(data, filename):
     print(f"  Saved -> {path}")
 
 
+# Parts not found by the scraper — add entries here as needed.
+# They are merged into the scraped results on every run, so they survive re-scrapes.
+# Duplicates (same name) are skipped automatically.
+MANUAL_EXTRAS = {
+    "blades.json": [
+        {"name": "BulletGriffon", "image_url": "https://static.wikia.nocookie.net/beyblade/images/d/d2/RatchetBladeBulletGriffon.png/revision/latest?cb=20260313031310"},
+    ],
+}
+
+
+def merge_extras(data, filename):
+    extras = MANUAL_EXTRAS.get(filename, [])
+    if not extras:
+        return data
+    existing_names = {p["name"] for p in data}
+    added = 0
+    for entry in extras:
+        if entry["name"] not in existing_names:
+            data.append(entry)
+            added += 1
+    if added:
+        data.sort(key=lambda p: p["name"])
+        print(f"  Merged {added} manual extra(s) from MANUAL_EXTRAS.")
+    return data
+
+
 def main():
     for part_config in PARTS:
         print(f"\nScraping {part_config['type']}s...")
         data = scrape_part(part_config)
+        data = merge_extras(data, part_config["output_file"])
         save(data, part_config["output_file"])
     print("\nDone.")
 

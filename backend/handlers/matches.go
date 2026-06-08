@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 
 	"example.com/x-tracker/db"
@@ -68,6 +69,7 @@ func CreateMatch1v1(c *gin.Context) {
 		req.Win, req.FinishType,
 	)
 	if err != nil {
+		log.Printf("CreateMatch1v1: db error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save match"})
 		return
 	}
