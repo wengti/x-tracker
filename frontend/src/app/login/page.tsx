@@ -32,7 +32,7 @@ export default function LoginPage() {
         return;
       }
 
-      localStorage.setItem("name", data.name);
+      localStorage.setItem("x-trakcer-name", data.name);
       router.push("/1vs1");
     } catch {
       setError("Unable to reach the server. Please try again.");
