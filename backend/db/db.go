@@ -37,6 +37,13 @@ func Init() error {
 		return fmt.Errorf("open database: %w", err)
 	}
 
+	// By default, SQLite does not enforce foreign key constraints,
+	// even if you've defined them in your schema (this is a backwards-compatibility quirk in SQLite).
+	// You have to explicitly turn it on per connection
+	if _, err := DB.Exec("PRAGMA foreign_keys = ON"); err != nil {
+		return fmt.Errorf("enable foreign keys: %w", err)
+	}
+
 	if err := createTables(); err != nil {
 		return fmt.Errorf("create tables: %w", err)
 	}
@@ -68,6 +75,92 @@ func createTables() error {
 			name     TEXT NOT NULL,
 			email    TEXT NOT NULL UNIQUE,
 			password TEXT NOT NULL
+		)
+	`)
+	if err != nil {
+		return err
+	}
+
+	_, err = DB.Exec(`
+		CREATE TABLE IF NOT EXISTS matches_3v3 (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+			user_id INTEGER NOT NULL REFERENCES users(id),
+
+			blade_a1_id        INTEGER REFERENCES parts(id),
+			metal_blade_a1_id  INTEGER REFERENCES parts(id),
+			over_blade_a1_id   INTEGER REFERENCES parts(id),
+			assist_blade_a1_id INTEGER REFERENCES parts(id),
+			lock_chip_a1_id    INTEGER REFERENCES parts(id),
+			ratchet_a1_id      INTEGER NOT NULL REFERENCES parts(id),
+			bit_a1_id          INTEGER NOT NULL REFERENCES parts(id),
+
+			blade_a2_id        INTEGER REFERENCES parts(id),
+			metal_blade_a2_id  INTEGER REFERENCES parts(id),
+			over_blade_a2_id   INTEGER REFERENCES parts(id),
+			assist_blade_a2_id INTEGER REFERENCES parts(id),
+			lock_chip_a2_id    INTEGER REFERENCES parts(id),
+			ratchet_a2_id      INTEGER NOT NULL REFERENCES parts(id),
+			bit_a2_id          INTEGER NOT NULL REFERENCES parts(id),
+
+			blade_a3_id        INTEGER REFERENCES parts(id),
+			metal_blade_a3_id  INTEGER REFERENCES parts(id),
+			over_blade_a3_id   INTEGER REFERENCES parts(id),
+			assist_blade_a3_id INTEGER REFERENCES parts(id),
+			lock_chip_a3_id    INTEGER REFERENCES parts(id),
+			ratchet_a3_id      INTEGER NOT NULL REFERENCES parts(id),
+			bit_a3_id          INTEGER NOT NULL REFERENCES parts(id),
+
+			blade_b1_id        INTEGER REFERENCES parts(id),
+			metal_blade_b1_id  INTEGER REFERENCES parts(id),
+			over_blade_b1_id   INTEGER REFERENCES parts(id),
+			assist_blade_b1_id INTEGER REFERENCES parts(id),
+			lock_chip_b1_id    INTEGER REFERENCES parts(id),
+			ratchet_b1_id      INTEGER NOT NULL REFERENCES parts(id),
+			bit_b1_id          INTEGER NOT NULL REFERENCES parts(id),
+
+			blade_b2_id        INTEGER REFERENCES parts(id),
+			metal_blade_b2_id  INTEGER REFERENCES parts(id),
+			over_blade_b2_id   INTEGER REFERENCES parts(id),
+			assist_blade_b2_id INTEGER REFERENCES parts(id),
+			lock_chip_b2_id    INTEGER REFERENCES parts(id),
+			ratchet_b2_id      INTEGER NOT NULL REFERENCES parts(id),
+			bit_b2_id          INTEGER NOT NULL REFERENCES parts(id),
+
+			blade_b3_id        INTEGER REFERENCES parts(id),
+			metal_blade_b3_id  INTEGER REFERENCES parts(id),
+			over_blade_b3_id   INTEGER REFERENCES parts(id),
+			assist_blade_b3_id INTEGER REFERENCES parts(id),
+			lock_chip_b3_id    INTEGER REFERENCES parts(id),
+			ratchet_b3_id      INTEGER NOT NULL REFERENCES parts(id),
+			bit_b3_id          INTEGER NOT NULL REFERENCES parts(id)
+		)
+	`)
+	if err != nil {
+		return err
+	}
+
+	_, err = DB.Exec(`
+		CREATE TABLE IF NOT EXISTS matches_1v1 (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+			user_id INTEGER NOT NULL REFERENCES users(id),
+
+			blade_a1_id        INTEGER REFERENCES parts(id),
+			metal_blade_a1_id  INTEGER REFERENCES parts(id),
+			over_blade_a1_id   INTEGER REFERENCES parts(id),
+			assist_blade_a1_id INTEGER REFERENCES parts(id),
+			lock_chip_a1_id    INTEGER REFERENCES parts(id),
+			ratchet_a1_id      INTEGER NOT NULL REFERENCES parts(id),
+			bit_a1_id          INTEGER NOT NULL REFERENCES parts(id),
+
+			blade_b1_id        INTEGER REFERENCES parts(id),
+			metal_blade_b1_id  INTEGER REFERENCES parts(id),
+			over_blade_b1_id   INTEGER REFERENCES parts(id),
+			assist_blade_b1_id INTEGER REFERENCES parts(id),
+			lock_chip_b1_id    INTEGER REFERENCES parts(id),
+			ratchet_b1_id      INTEGER NOT NULL REFERENCES parts(id),
+			bit_b1_id          INTEGER NOT NULL REFERENCES parts(id)
 		)
 	`)
 	return err

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"example.com/x-tracker/db"
+	"example.com/x-tracker/handlers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +19,8 @@ func main() {
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "hello world"})
 	})
+
+	r.POST("/auth/signup", handlers.SignUp)
 
 	r.Run(":8080")
 }
