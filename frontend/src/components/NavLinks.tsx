@@ -20,7 +20,6 @@ export default function NavLinks() {
     setName(localStorage.getItem("x-tracker-name"));
   }, [pathname]);
 
-  // Close menu on route change
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
@@ -28,6 +27,10 @@ export default function NavLinks() {
   async function logout() {
     await fetch(apiURL("/auth/logout"), { method: "POST", credentials: "include" });
     localStorage.removeItem("x-tracker-name");
+    // Dev-only: clear the session flag cookie set at login (see login/page.tsx)
+    if (process.env.NEXT_PUBLIC_API_URL) {
+      document.cookie = "x-tracker-session=; path=/; SameSite=Strict; Max-Age=0";
+    }
     setName(null);
     router.push("/");
   }
@@ -36,6 +39,8 @@ export default function NavLinks() {
     pathname === href
       ? "text-blue-400"
       : "text-neutral-400 transition-colors hover:text-white";
+
+  if (!name) return null;
 
   return (
     <>
@@ -46,16 +51,12 @@ export default function NavLinks() {
             {label}
           </Link>
         ))}
-        {name && (
-          <>
-            <Link href="/profile" className={navLinkClass("/profile")}>
-              {name}
-            </Link>
-            <button onClick={logout} className="text-neutral-400 transition-colors hover:text-white">
-              Log out
-            </button>
-          </>
-        )}
+        <Link href="/profile" className={navLinkClass("/profile")}>
+          {name}
+        </Link>
+        <button onClick={logout} className="text-neutral-400 transition-colors hover:text-white">
+          Log out
+        </button>
       </nav>
 
       {/* Mobile hamburger */}
@@ -81,23 +82,19 @@ export default function NavLinks() {
                 {label}
               </Link>
             ))}
-            {name && (
-              <>
-                <div className="my-1.5 border-t border-neutral-800" />
-                <Link
-                  href="/profile"
-                  className={`block px-4 py-2 text-sm font-medium ${navLinkClass("/profile")}`}
-                >
-                  {name}
-                </Link>
-                <button
-                  onClick={logout}
-                  className="block w-full px-4 py-2 text-left text-sm font-medium text-neutral-400 hover:text-white"
-                >
-                  Log out
-                </button>
-              </>
-            )}
+            <div className="my-1.5 border-t border-neutral-800" />
+            <Link
+              href="/profile"
+              className={`block px-4 py-2 text-sm font-medium ${navLinkClass("/profile")}`}
+            >
+              {name}
+            </Link>
+            <button
+              onClick={logout}
+              className="block w-full px-4 py-2 text-left text-sm font-medium text-neutral-400 hover:text-white"
+            >
+              Log out
+            </button>
           </div>
         )}
       </div>

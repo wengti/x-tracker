@@ -33,6 +33,12 @@ export default function LoginPage() {
       }
 
       localStorage.setItem("x-tracker-name", data.name);
+      // Dev-only: non-httpOnly flag cookie so the Next.js middleware on localhost:3000
+      // can detect a logged-in session. In production both run on the same domain so
+      // the backend's httpOnly token cookie is visible to middleware directly.
+      if (process.env.NEXT_PUBLIC_API_URL) {
+        document.cookie = "x-tracker-session=1; path=/; SameSite=Strict; Max-Age=604800";
+      }
       router.push("/1vs1");
     } catch {
       setError("Unable to reach the server. Please try again.");
