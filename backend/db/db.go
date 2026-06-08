@@ -165,8 +165,9 @@ func createTables() error {
 			ratchet_b1_id      INTEGER REFERENCES parts(id),
 			bit_b1_id          INTEGER NOT NULL REFERENCES parts(id),
 
-			win         INTEGER NOT NULL,
-			finish_type TEXT NOT NULL
+			win          INTEGER NOT NULL,
+			finish_type  TEXT NOT NULL,
+			match_3v3_id INTEGER REFERENCES matches_3v3(id)
 		)
 	`)
 	return err

@@ -6,6 +6,12 @@ import FinishButtons from "@/components/FinishButtons";
 import BeySetupPanel from "@/components/BeySetupPanel";
 import BeyPicker from "@/components/BeyPicker";
 import { type BeySetup, DEFAULT_BEY_SETUP, getBeyName, findDuplicateParts } from "@/types/bey";
+import { fetchParts, type Part } from "@/data/parts";
+import { apiURL } from "@/lib/api";
+
+function partId(list: Part[], name: string): number | null {
+  return name ? (list.find((p) => p.name === name)?.id ?? null) : null;
+}
 
 type Score = { you: number; opponent: number };
 
@@ -14,6 +20,8 @@ type HistoryEntry = {
   finishType: string;
   youBeyName: string;
   opponentBeyName: string;
+  youSetup: BeySetup;
+  opponentSetup: BeySetup;
 };
 
 const FINISH_POINTS: Record<string, number> = {
@@ -49,6 +57,8 @@ export default function ThreeVsThreePage() {
     setOpponentSetups((prev) => prev.map((s, i) => (i === index ? setup : s)));
   }
 
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   function addPoints(side: "you" | "opponent", points: number, finishType: string) {
     setScore((prev) => ({ ...prev, [side]: prev[side] + points }));
     setHistory((prev) => [...prev, {
@@ -56,18 +66,68 @@ export default function ThreeVsThreePage() {
       finishType,
       youBeyName: getBeyName(youSetups[selectedYouBey]),
       opponentBeyName: getBeyName(opponentSetups[selectedOpponentBey]),
+      youSetup: { ...youSetups[selectedYouBey] },
+      opponentSetup: { ...opponentSetups[selectedOpponentBey] },
     }]);
   }
 
-  function handleSubmit() {
-    // TODO: send 3v3 match result and 1v1 match results to backend
+  function buildBeyPayload(setup: BeySetup, catalog: Awaited<ReturnType<typeof fetchParts>>) {
+    return {
+      blade_id:        partId(catalog.blade,        setup.blade),
+      metal_blade_id:  partId(catalog.metal_blade,  setup.metalBlade),
+      over_blade_id:   partId(catalog.over_blade,   setup.overBlade),
+      assist_blade_id: partId(catalog.assist_blade, setup.assistBlade),
+      lock_chip_id:    partId(catalog.lock_chip,    setup.lockChip),
+      ratchet_id:      partId(catalog.ratchet,      setup.ratchet),
+      bit_id:          partId(catalog.bit,          setup.bit),
+    };
+  }
+
+  async function handleSubmit() {
+    if (!isYourFriend && history.length > 0) {
+      setSubmitError(null);
+      try {
+        const catalog = await fetchParts();
+        const body = {
+          you_setups:      youSetups.map((s) => buildBeyPayload(s, catalog)),
+          opponent_setups: opponentSetups.map((s) => buildBeyPayload(s, catalog)),
+          your_score:      score.you,
+          opponent_score:  score.opponent,
+          rounds: history.map((entry) => ({
+            you_bey:      buildBeyPayload(entry.youSetup,      catalog),
+            opponent_bey: buildBeyPayload(entry.opponentSetup, catalog),
+            win:          entry.hasWon ? 1 : 0,
+            finish_type:  entry.finishType,
+          })),
+        };
+
+        const res = await fetch(apiURL("/matches/3v3"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(body),
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          setSubmitError(data.error ?? "Failed to save match.");
+          return;
+        }
+      } catch {
+        setSubmitError("Unable to reach the server. Please try again.");
+        return;
+      }
+    }
+
     setScore({ you: 0, opponent: 0 });
     setHistory([]);
+    setSubmitError(null);
   }
 
   function handleClear() {
     setScore({ you: 0, opponent: 0 });
     setHistory([]);
+    setSubmitError(null);
   }
 
   return (
@@ -150,6 +210,11 @@ export default function ThreeVsThreePage() {
 
         {/* 5. Submit / Clear */}
         <section aria-label="Actions">
+          {submitError && (
+            <p className="mb-3 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-2.5 text-sm text-red-400">
+              {submitError}
+            </p>
+          )}
           <div className="flex gap-3">
             <button
               disabled={score.you === 0 && score.opponent === 0}
