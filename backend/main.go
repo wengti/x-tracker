@@ -5,21 +5,31 @@ import (
 	"net/http"
 	"os"
 
+	"example.com/x-tracker/auth"
 	"example.com/x-tracker/db"
 	"example.com/x-tracker/handlers"
 	"example.com/x-tracker/middlewares"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
-	// Load .env if present (ignored in production where env vars are set directly)
-	_ = godotenv.Load()
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("failed to load environment: %v", err)
+	}
 
 	if err := db.Init(); err != nil {
 		log.Fatalf("failed to initialize database: %v", err)
 	}
+
+	// Establish connection to Redis (responsible for storing invalid jwt token's ID)
+	redisOpts, err := redis.ParseURL(os.Getenv("REDIS_URL"))
+	if err != nil {
+		log.Fatalf("invalid REDIS_URL: %v", err)
+	}
+	auth.InitBlocklist(redis.NewClient(redisOpts))
 
 	r := gin.Default()
 
@@ -39,12 +49,11 @@ func main() {
 
 	r.POST("/auth/signup", handlers.SignUp)
 	r.POST("/auth/login", handlers.Login)
-	r.POST("/auth/logout", handlers.Logout)
 
-	auth := r.Group("/")
-	auth.Use(middlewares.VerifyAuthorization())
+	protected := r.Group("/")
+	protected.Use(middlewares.VerifyAuthorization())
 	{
-		// authenticated routes go here
+		protected.POST("/auth/logout", handlers.Logout)
 	}
 
 	r.Run(":8080")

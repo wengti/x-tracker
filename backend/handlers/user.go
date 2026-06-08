@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"net/http"
 	"net/mail"
 	"os"
@@ -8,11 +10,20 @@ import (
 	"time"
 	"unicode"
 
+	"example.com/x-tracker/auth"
 	"example.com/x-tracker/db"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
+
+func generateJTI() (string, error) {
+	b := make([]byte, 16)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(b), nil
+}
 
 
 func isStrongPassword(p string) bool {
@@ -135,9 +146,16 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	jti, err := generateJTI()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate token"})
+		return
+	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":    id,
 		"email": req.Email,
+		"jti":   jti,
 		"exp":   time.Now().Add(7 * 24 * time.Hour).Unix(),
 	})
 
@@ -161,6 +179,18 @@ func Login(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
+	jti, _ := c.Get("jti")
+	exp, _ := c.Get("exp")
+
+	if jtiStr, ok := jti.(string); ok {
+		if expTime, ok := exp.(time.Time); ok {
+			if err := auth.Block(jtiStr, expTime); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to invalidate token"})
+				return
+			}
+		}
+	}
+
 	http.SetCookie(c.Writer, &http.Cookie{
 		Name:     "token",
 		Value:    "",

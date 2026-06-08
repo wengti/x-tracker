@@ -17,7 +17,7 @@ export default function NavLinks() {
 
   useEffect(() => {
     setName(localStorage.getItem("x-tracker-name"));
-  }, []);
+  }, [pathname]);
 
   async function logout() {
     await fetch(apiURL("/auth/logout"), { method: "POST", credentials: "include" });
