@@ -39,6 +39,7 @@ func main() {
 
 	r.POST("/auth/signup", handlers.SignUp)
 	r.POST("/auth/login", handlers.Login)
+	r.POST("/auth/logout", handlers.Logout)
 
 	auth := r.Group("/")
 	auth.Use(middlewares.VerifyAuthorization())

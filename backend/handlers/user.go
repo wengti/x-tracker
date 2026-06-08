@@ -159,3 +159,16 @@ func Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"name": name})
 }
+
+func Logout(c *gin.Context) {
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "token",
+		Value:    "",
+		MaxAge:   -1,
+		Path:     "/",
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+		Secure:   os.Getenv("COOKIE_SECURE") == "true",
+	})
+	c.JSON(http.StatusOK, gin.H{})
+}

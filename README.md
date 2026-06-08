@@ -36,7 +36,10 @@ users - name, email and pw
 (done)
 
 4. sign up user and login user and logout
-- invalidate expired jwt token
+
+logout
+- clear local storage name
+- invalidate expired jwt token (done, but subject to be tested)
 - how to invalidate jwt token that is not expired but logged out
 
 5. A method to save your bey

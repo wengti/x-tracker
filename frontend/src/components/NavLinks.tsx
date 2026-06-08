@@ -1,8 +1,9 @@
 'use client'
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { apiURL } from "@/lib/api";
 
 const links = [
   { href: "/1vs1", label: "1 vs 1" },
@@ -11,11 +12,19 @@ const links = [
 
 export default function NavLinks() {
   const pathname = usePathname();
+  const router = useRouter();
   const [name, setName] = useState<string | null>(null);
 
   useEffect(() => {
-    setName(localStorage.getItem("x-trakcer-name"));
+    setName(localStorage.getItem("x-tracker-name"));
   }, []);
+
+  async function logout() {
+    await fetch(apiURL("/auth/logout"), { method: "POST", credentials: "include" });
+    localStorage.removeItem("x-tracker-name");
+    setName(null);
+    router.push("/");
+  }
 
   return (
     <nav className="flex items-center gap-6 text-sm font-medium">
@@ -34,16 +43,24 @@ export default function NavLinks() {
       ))}
 
       {name && (
-        <Link
-          href="/profile"
-          className={
-            pathname === "/profile"
-              ? "text-blue-400"
-              : "text-neutral-400 transition-colors hover:text-white"
-          }
-        >
-          {name}
-        </Link>
+        <>
+          <Link
+            href="/profile"
+            className={
+              pathname === "/profile"
+                ? "text-blue-400"
+                : "text-neutral-400 transition-colors hover:text-white"
+            }
+          >
+            {name}
+          </Link>
+          <button
+            onClick={logout}
+            className="text-neutral-400 transition-colors hover:text-white"
+          >
+            Log out
+          </button>
+        </>
       )}
     </nav>
   );
