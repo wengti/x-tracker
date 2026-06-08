@@ -7,6 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var validFinishTypes = map[string]bool{
+	"Spin Finish":    true,
+	"Burst Finish":   true,
+	"Over Finish":    true,
+	"Extreme Finish": true,
+}
+
 type match1v1Request struct {
 	BladeA1       *int64 `json:"blade_a1_id"`
 	MetalBladeA1  *int64 `json:"metal_blade_a1_id"`
@@ -34,6 +41,11 @@ func CreateMatch1v1(c *gin.Context) {
 	var req match1v1Request
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if !validFinishTypes[req.FinishType] {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid finish_type"})
 		return
 	}
 
