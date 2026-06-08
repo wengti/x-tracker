@@ -1,12 +1,24 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { BeySetup } from "@/types/bey";
 import PartSelector from "./PartSelector";
-import {
-  BLADES, BITS, RATCHETS,
-  LOCK_CHIPS, METAL_BLADES, ASSIST_BLADES, OVER_BLADES,
-} from "@/data/parts";
+import { fetchParts, type Part } from "@/data/parts";
+
+type Parts = {
+  blades: Part[];
+  bits: Part[];
+  ratchets: Part[];
+  lockChips: Part[];
+  metalBlades: Part[];
+  assistBlades: Part[];
+  overBlades: Part[];
+};
+
+const EMPTY: Parts = {
+  blades: [], bits: [], ratchets: [],
+  lockChips: [], metalBlades: [], assistBlades: [], overBlades: [],
+};
 
 type Props = {
   label: string;
@@ -36,6 +48,22 @@ function getDuplicatedLabels(setup: BeySetup, duplicateParts: Set<string>): stri
 
 export default function BeySetupPanel({ label, setup, onSetupChange, duplicateParts }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [parts, setParts] = useState<Parts>(EMPTY);
+
+  useEffect(() => {
+    fetchParts()
+      .then((c) => setParts({
+        blades:       c.blade,
+        bits:         c.bit,
+        ratchets:     c.ratchet,
+        lockChips:    c.lock_chip,
+        metalBlades:  c.metal_blade,
+        assistBlades: c.assist_blade,
+        overBlades:   c.over_blade,
+      }))
+      .catch(console.error);
+  }, []);
+
   const duplicatedLabels = duplicateParts ? getDuplicatedLabels(setup, duplicateParts) : [];
   const hasDuplicates = duplicatedLabels.length > 0;
 
@@ -102,18 +130,18 @@ export default function BeySetupPanel({ label, setup, onSetupChange, duplicatePa
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {setup.isCX ? (
               <>
-                <PartSelector label="Lock Chip"    options={LOCK_CHIPS}    value={setup.lockChip}    onChange={(v) => update("lockChip", v)}    />
-                <PartSelector label="Metal Blade"  options={METAL_BLADES}  value={setup.metalBlade}  onChange={(v) => update("metalBlade", v)}  />
-                <PartSelector label="Assist Blade" options={ASSIST_BLADES} value={setup.assistBlade} onChange={(v) => update("assistBlade", v)} />
-                <PartSelector label="Over Blade"   options={OVER_BLADES}   value={setup.overBlade}   onChange={(v) => update("overBlade", v)}   />
-                <PartSelector label="Ratchet"      options={RATCHETS}      value={setup.ratchet}     onChange={(v) => update("ratchet", v)}     />
-                <PartSelector label="Bit"          options={BITS}          value={setup.bit}         onChange={(v) => update("bit", v)}         />
+                <PartSelector label="Lock Chip"    options={parts.lockChips}    value={setup.lockChip}    onChange={(v) => update("lockChip", v)}    />
+                <PartSelector label="Metal Blade"  options={parts.metalBlades}  value={setup.metalBlade}  onChange={(v) => update("metalBlade", v)}  />
+                <PartSelector label="Assist Blade" options={parts.assistBlades} value={setup.assistBlade} onChange={(v) => update("assistBlade", v)} />
+                <PartSelector label="Over Blade"   options={parts.overBlades}   value={setup.overBlade}   onChange={(v) => update("overBlade", v)}   />
+                <PartSelector label="Ratchet"      options={parts.ratchets}     value={setup.ratchet}     onChange={(v) => update("ratchet", v)}     />
+                <PartSelector label="Bit"          options={parts.bits}         value={setup.bit}         onChange={(v) => update("bit", v)}         />
               </>
             ) : (
               <>
-                <PartSelector label="Blade"   options={BLADES}   value={setup.blade}   onChange={(v) => update("blade", v)}   />
-                <PartSelector label="Ratchet" options={RATCHETS} value={setup.ratchet} onChange={(v) => update("ratchet", v)} />
-                <PartSelector label="Bit"     options={BITS}     value={setup.bit}     onChange={(v) => update("bit", v)}     />
+                <PartSelector label="Blade"   options={parts.blades}   value={setup.blade}   onChange={(v) => update("blade", v)}   />
+                <PartSelector label="Ratchet" options={parts.ratchets} value={setup.ratchet} onChange={(v) => update("ratchet", v)} />
+                <PartSelector label="Bit"     options={parts.bits}     value={setup.bit}     onChange={(v) => update("bit", v)}     />
               </>
             )}
           </div>

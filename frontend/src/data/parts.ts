@@ -1,28 +1,43 @@
-// TODO: replace static imports with API calls to the backend once it is set up.
-// Each of these datasets should be fetched via a GET endpoint (e.g. GET /api/parts/blades)
-// so that the frontend always reflects the latest data from the database.
-
-import bladesRaw       from "./seeds/blades.json";
-import bitsRaw         from "./seeds/bits.json";
-import ratchetsRaw     from "./seeds/ratchets.json";
-import lockChipsRaw    from "./seeds/lock_chips.json";
-import metalBladesRaw  from "./seeds/metal_blades.json";
-import assistBladesRaw from "./seeds/assist_blades.json";
-import overBladesRaw   from "./seeds/over_blades.json";
+import { apiURL } from "@/lib/api";
 
 export type Part = {
+  id: number;
   name: string;
   imageUrl: string;
 };
 
-function toParts(raw: { name: string; image_url: string }[]): Part[] {
-  return raw.map(({ name, image_url }) => ({ name, imageUrl: image_url }));
+export type PartsCatalog = {
+  blade: Part[];
+  bit: Part[];
+  ratchet: Part[];
+  lock_chip: Part[];
+  metal_blade: Part[];
+  assist_blade: Part[];
+  over_blade: Part[];
+};
+
+type RawPart = { id: number; name: string; image_url: string };
+type RawCatalog = Record<string, RawPart[]>;
+
+let cache: PartsCatalog | null = null;
+
+function toParts(arr: RawPart[] = []): Part[] {
+  return arr.map(({ id, name, image_url }) => ({ id, name, imageUrl: image_url }));
 }
 
-export const BLADES       = toParts(bladesRaw);
-export const BITS         = toParts(bitsRaw);
-export const RATCHETS     = toParts(ratchetsRaw);
-export const LOCK_CHIPS   = toParts(lockChipsRaw);
-export const METAL_BLADES = toParts(metalBladesRaw);
-export const ASSIST_BLADES = toParts(assistBladesRaw);
-export const OVER_BLADES  = toParts(overBladesRaw);
+export async function fetchParts(): Promise<PartsCatalog> {
+  if (cache) return cache;
+  const res = await fetch(apiURL("/parts"));
+  if (!res.ok) throw new Error("Failed to fetch parts");
+  const raw: RawCatalog = await res.json();
+  cache = {
+    blade:        toParts(raw.blade),
+    bit:          toParts(raw.bit),
+    ratchet:      toParts(raw.ratchet),
+    lock_chip:    toParts(raw.lock_chip),
+    metal_blade:  toParts(raw.metal_blade),
+    assist_blade: toParts(raw.assist_blade),
+    over_blade:   toParts(raw.over_blade),
+  };
+  return cache;
+}

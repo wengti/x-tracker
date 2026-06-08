@@ -47,6 +47,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "hello world"})
 	})
 
+	r.GET("/parts", handlers.GetParts)
 	r.POST("/auth/signup", handlers.SignUp)
 	r.POST("/auth/login", handlers.Login)
 

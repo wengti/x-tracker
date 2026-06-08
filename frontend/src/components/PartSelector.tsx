@@ -74,7 +74,7 @@ export default function PartSelector({ label, value, onChange, options }: Props)
           <ul className="scrollbar-blue absolute left-0 top-full z-10 mt-1 max-h-48 min-w-full w-max overflow-y-auto rounded-lg border border-neutral-700 bg-neutral-900 shadow-xl">
             {filtered.length > 0 ? (
               filtered.map((part) => (
-                <li key={part.name}>
+                <li key={part.id}>
                   <button
                     type="button"
                     onMouseDown={() => {
