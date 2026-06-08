@@ -28,14 +28,14 @@ PART II: 3v3 bey
 3. Database
 parts - name, type, image
 users - name, email and pw
-3v3 match - userid, type (your / not yours) blade a1, overblade a1, ... , blade a2.... , blade a3..., blade b1, overblade b1, ... , blade b2.... , blade b3...score
-1v1 match - userid, match_id (nullable), type (your / not yours), type match (1v1 or 3v3), blade a, ... blade b, win or loss, finish type
+3v3 match - userid, blade a1, overblade a1, ... , blade a2.... , blade a3..., blade b1, overblade b1, ... , blade b2.... , blade b3...score
+1v1 match - userid, match_id (nullable), type match (1v1 or 3v3), blade a, ... blade b, win or loss, finish type
 
 4. sign up user and login user and logout
 - invalidate expired jwt token
 - how to invalidate jwt token that is not expired but logged out
 
-5. A method to add new parts
+5. A method to save your bey
 
 
 6. 1v1 results
