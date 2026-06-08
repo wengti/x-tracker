@@ -20,16 +20,16 @@ type match1v1Request struct {
 	OverBladeA1   *int64 `json:"over_blade_a1_id"`
 	AssistBladeA1 *int64 `json:"assist_blade_a1_id"`
 	LockChipA1    *int64 `json:"lock_chip_a1_id"`
-	RatchetA1     *int64 `json:"ratchet_a1_id"  binding:"required"`
-	BitA1         *int64 `json:"bit_a1_id"       binding:"required"`
+	RatchetA1     *int64 `json:"ratchet_a1_id"`
+	BitA1         *int64 `json:"bit_a1_id"  binding:"required"`
 
 	BladeB1       *int64 `json:"blade_b1_id"`
 	MetalBladeB1  *int64 `json:"metal_blade_b1_id"`
 	OverBladeB1   *int64 `json:"over_blade_b1_id"`
 	AssistBladeB1 *int64 `json:"assist_blade_b1_id"`
 	LockChipB1    *int64 `json:"lock_chip_b1_id"`
-	RatchetB1     *int64 `json:"ratchet_b1_id"  binding:"required"`
-	BitB1         *int64 `json:"bit_b1_id"       binding:"required"`
+	RatchetB1     *int64 `json:"ratchet_b1_id"`
+	BitB1         *int64 `json:"bit_b1_id"  binding:"required"`
 
 	Win        int    `json:"win"`
 	FinishType string `json:"finish_type" binding:"required"`

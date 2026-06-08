@@ -92,7 +92,7 @@ func createTables() error {
 			over_blade_a1_id   INTEGER REFERENCES parts(id),
 			assist_blade_a1_id INTEGER REFERENCES parts(id),
 			lock_chip_a1_id    INTEGER REFERENCES parts(id),
-			ratchet_a1_id      INTEGER NOT NULL REFERENCES parts(id),
+			ratchet_a1_id      INTEGER REFERENCES parts(id),
 			bit_a1_id          INTEGER NOT NULL REFERENCES parts(id),
 
 			blade_a2_id        INTEGER REFERENCES parts(id),
@@ -100,7 +100,7 @@ func createTables() error {
 			over_blade_a2_id   INTEGER REFERENCES parts(id),
 			assist_blade_a2_id INTEGER REFERENCES parts(id),
 			lock_chip_a2_id    INTEGER REFERENCES parts(id),
-			ratchet_a2_id      INTEGER NOT NULL REFERENCES parts(id),
+			ratchet_a2_id      INTEGER REFERENCES parts(id),
 			bit_a2_id          INTEGER NOT NULL REFERENCES parts(id),
 
 			blade_a3_id        INTEGER REFERENCES parts(id),
@@ -108,7 +108,7 @@ func createTables() error {
 			over_blade_a3_id   INTEGER REFERENCES parts(id),
 			assist_blade_a3_id INTEGER REFERENCES parts(id),
 			lock_chip_a3_id    INTEGER REFERENCES parts(id),
-			ratchet_a3_id      INTEGER NOT NULL REFERENCES parts(id),
+			ratchet_a3_id      INTEGER REFERENCES parts(id),
 			bit_a3_id          INTEGER NOT NULL REFERENCES parts(id),
 
 			blade_b1_id        INTEGER REFERENCES parts(id),
@@ -116,7 +116,7 @@ func createTables() error {
 			over_blade_b1_id   INTEGER REFERENCES parts(id),
 			assist_blade_b1_id INTEGER REFERENCES parts(id),
 			lock_chip_b1_id    INTEGER REFERENCES parts(id),
-			ratchet_b1_id      INTEGER NOT NULL REFERENCES parts(id),
+			ratchet_b1_id      INTEGER REFERENCES parts(id),
 			bit_b1_id          INTEGER NOT NULL REFERENCES parts(id),
 
 			blade_b2_id        INTEGER REFERENCES parts(id),
@@ -124,7 +124,7 @@ func createTables() error {
 			over_blade_b2_id   INTEGER REFERENCES parts(id),
 			assist_blade_b2_id INTEGER REFERENCES parts(id),
 			lock_chip_b2_id    INTEGER REFERENCES parts(id),
-			ratchet_b2_id      INTEGER NOT NULL REFERENCES parts(id),
+			ratchet_b2_id      INTEGER REFERENCES parts(id),
 			bit_b2_id          INTEGER NOT NULL REFERENCES parts(id),
 
 			blade_b3_id        INTEGER REFERENCES parts(id),
@@ -132,7 +132,7 @@ func createTables() error {
 			over_blade_b3_id   INTEGER REFERENCES parts(id),
 			assist_blade_b3_id INTEGER REFERENCES parts(id),
 			lock_chip_b3_id    INTEGER REFERENCES parts(id),
-			ratchet_b3_id      INTEGER NOT NULL REFERENCES parts(id),
+			ratchet_b3_id      INTEGER REFERENCES parts(id),
 			bit_b3_id          INTEGER NOT NULL REFERENCES parts(id),
 
 			your_score     INTEGER NOT NULL,
@@ -154,7 +154,7 @@ func createTables() error {
 			over_blade_a1_id   INTEGER REFERENCES parts(id),
 			assist_blade_a1_id INTEGER REFERENCES parts(id),
 			lock_chip_a1_id    INTEGER REFERENCES parts(id),
-			ratchet_a1_id      INTEGER NOT NULL REFERENCES parts(id),
+			ratchet_a1_id      INTEGER REFERENCES parts(id),
 			bit_a1_id          INTEGER NOT NULL REFERENCES parts(id),
 
 			blade_b1_id        INTEGER REFERENCES parts(id),
@@ -162,7 +162,7 @@ func createTables() error {
 			over_blade_b1_id   INTEGER REFERENCES parts(id),
 			assist_blade_b1_id INTEGER REFERENCES parts(id),
 			lock_chip_b1_id    INTEGER REFERENCES parts(id),
-			ratchet_b1_id      INTEGER NOT NULL REFERENCES parts(id),
+			ratchet_b1_id      INTEGER REFERENCES parts(id),
 			bit_b1_id          INTEGER NOT NULL REFERENCES parts(id),
 
 			win         INTEGER NOT NULL,
