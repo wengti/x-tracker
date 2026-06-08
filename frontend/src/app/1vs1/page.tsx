@@ -95,8 +95,8 @@ export default function OneVsOnePage() {
         {/* 4. Finish Buttons */}
         <section aria-label="Finish Buttons">
           <div className="grid grid-cols-2 gap-3 sm:gap-6">
-            <FinishButtons side="you" onFinish={(pts) => addPoints("you", pts)} disabled={roundLocked} />
-            <FinishButtons side="opponent" onFinish={(pts) => addPoints("opponent", pts)} disabled={roundLocked} />
+            <FinishButtons side="you" onFinish={(pts, _type) => addPoints("you", pts)} disabled={roundLocked} />
+            <FinishButtons side="opponent" onFinish={(pts, _type) => addPoints("opponent", pts)} disabled={roundLocked} />
           </div>
         </section>
 

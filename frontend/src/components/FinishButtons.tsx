@@ -23,7 +23,7 @@ const FINISHES = [
 
 type Props = {
   side: "you" | "opponent";
-  onFinish: (points: number) => void;
+  onFinish: (points: number, finishType: string) => void;
   disabled?: boolean;
 };
 
@@ -38,7 +38,7 @@ export default function FinishButtons({ side, onFinish, disabled = false }: Prop
           <button
             key={label}
             disabled={disabled}
-            onClick={() => onFinish(points)}
+            onClick={() => onFinish(points, label)}
             className={`flex flex-col justify-center items-center gap-1 rounded-xl border bg-neutral-900 px-3 py-4 transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 ${style}`}
           >
             <span className="text-sm font-semibold">{label}</span>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Scoreboard from "@/components/Scoreboard";
 import FinishButtons from "@/components/FinishButtons";
 import BeySetupPanel from "@/components/BeySetupPanel";
@@ -8,6 +8,20 @@ import BeyPicker from "@/components/BeyPicker";
 import { type BeySetup, DEFAULT_BEY_SETUP, getBeyName, findDuplicateParts } from "@/types/bey";
 
 type Score = { you: number; opponent: number };
+
+type HistoryEntry = {
+  hasWon: boolean;
+  finishType: string;
+  youBeyName: string;
+  opponentBeyName: string;
+};
+
+const FINISH_POINTS: Record<string, number> = {
+  "Spin Finish": 1,
+  "Burst Finish": 2,
+  "Over Finish": 2,
+  "Extreme Finish": 3,
+};
 
 const EMPTY_SETUPS = (): BeySetup[] => [
   { ...DEFAULT_BEY_SETUP },
@@ -17,6 +31,7 @@ const EMPTY_SETUPS = (): BeySetup[] => [
 
 export default function ThreeVsThreePage() {
   const [score, setScore] = useState<Score>({ you: 0, opponent: 0 });
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [isYourFriend, setIsYourFriend] = useState(false);
   const [youSetups, setYouSetups] = useState<BeySetup[]>(EMPTY_SETUPS());
   const [opponentSetups, setOpponentSetups] = useState<BeySetup[]>(EMPTY_SETUPS());
@@ -34,17 +49,25 @@ export default function ThreeVsThreePage() {
     setOpponentSetups((prev) => prev.map((s, i) => (i === index ? setup : s)));
   }
 
-  function addPoints(side: "you" | "opponent", points: number) {
+  function addPoints(side: "you" | "opponent", points: number, finishType: string) {
     setScore((prev) => ({ ...prev, [side]: prev[side] + points }));
+    setHistory((prev) => [...prev, {
+      hasWon: side === "you",
+      finishType,
+      youBeyName: getBeyName(youSetups[selectedYouBey]),
+      opponentBeyName: getBeyName(opponentSetups[selectedOpponentBey]),
+    }]);
   }
 
   function handleSubmit() {
     // TODO: send 3v3 match result and 1v1 match results to backend
     setScore({ you: 0, opponent: 0 });
+    setHistory([]);
   }
 
   function handleClear() {
     setScore({ you: 0, opponent: 0 });
+    setHistory([]);
   }
 
   return (
@@ -120,8 +143,8 @@ export default function ThreeVsThreePage() {
         {/* 4. Finish Buttons */}
         <section aria-label="Finish Buttons">
           <div className="grid grid-cols-2 gap-3 sm:gap-6">
-            <FinishButtons side="you" onFinish={(pts) => addPoints("you", pts)} />
-            <FinishButtons side="opponent" onFinish={(pts) => addPoints("opponent", pts)} />
+            <FinishButtons side="you" onFinish={(pts, type) => addPoints("you", pts, type)} />
+            <FinishButtons side="opponent" onFinish={(pts, type) => addPoints("opponent", pts, type)} />
           </div>
         </section>
 
@@ -145,7 +168,81 @@ export default function ThreeVsThreePage() {
           </div>
         </section>
 
+        {/* 6. History */}
+        <section aria-label="History">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-400">
+            History
+          </h2>
+          {history.length === 0 ? (
+            <p className="text-sm text-neutral-600">No rounds recorded yet.</p>
+          ) : (
+            <>
+              {/* Card layout — mobile only */}
+              <div className="space-y-3 sm:hidden">
+                {history.map((entry, i) => (
+                  <div key={i} className="rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm space-y-1.5">
+                    <p className="text-xs font-semibold text-neutral-600">#{i + 1}</p>
+                    <Row label="Winner">
+                      <span className={entry.hasWon ? "text-blue-400" : "text-red-400"}>
+                        {entry.hasWon ? (isYourFriend ? "Your Friend" : "You") : "Opponent"}
+                      </span>
+                    </Row>
+                    <Row label="Finish Type">
+                      {entry.finishType} (+{FINISH_POINTS[entry.finishType] ?? 0})
+                    </Row>
+                    <Row label={isYourFriend ? "Your Friend's Bey" : "Your Bey"}>
+                      {entry.youBeyName}
+                    </Row>
+                    <Row label="Opponent's Bey">
+                      {entry.opponentBeyName}
+                    </Row>
+                  </div>
+                ))}
+              </div>
+
+              {/* Table layout — sm and above */}
+              <div className="hidden sm:block overflow-x-auto rounded-xl border border-neutral-800">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-neutral-800 text-left text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                      <th className="px-4 py-3">#</th>
+                      <th className="px-4 py-3">Winner</th>
+                      <th className="px-4 py-3">Finish Type</th>
+                      <th className="px-4 py-3">{isYourFriend ? "Your Friend's Bey" : "Your Bey"}</th>
+                      <th className="px-4 py-3">Opponent's Bey</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {history.map((entry, i) => (
+                      <tr key={i} className="border-b border-neutral-800/50 last:border-0">
+                        <td className="px-4 py-3 text-neutral-600 font-semibold">{i + 1}</td>
+                        <td className={`px-4 py-3 font-medium ${entry.hasWon ? "text-blue-400" : "text-red-400"}`}>
+                          {entry.hasWon ? (isYourFriend ? "Your Friend" : "You") : "Opponent"}
+                        </td>
+                        <td className="px-4 py-3 text-neutral-300">
+                          {entry.finishType} (+{FINISH_POINTS[entry.finishType] ?? 0})
+                        </td>
+                        <td className="px-4 py-3 text-neutral-300">{entry.youBeyName}</td>
+                        <td className="px-4 py-3 text-neutral-300">{entry.opponentBeyName}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </section>
+
       </div>
     </main>
+  );
+}
+
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex gap-2">
+      <span className="w-36 shrink-0 text-xs font-semibold uppercase tracking-wide text-neutral-500">{label}</span>
+      <span className="text-neutral-300">{children}</span>
+    </div>
   );
 }
