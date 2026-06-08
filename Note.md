@@ -97,6 +97,43 @@ An in-memory (sync.Map) blocklist solves this during a single server uptime, but
 
 Redis solves both problems — it persists across restarts and handles TTL expiry automatically.
 
+**Initialize Redis**
+1. Local dev (Docker):
+
+Launch using Docker
+```bash
+docker run -d \
+  --name redis \
+  -p 6379:6379 \
+  redis redis-server --requirepass "yourPassword"
+```
+
+Set environment variables
+```bash
+//.env:
+REDIS_URL=redis://:yourPassword@localhost:6379
+```
+
+2. EC2 production:
+```bash
+sudo apt install redis
+# set requirepass in /etc/redis/redis.conf
+sudo systemctl restart redis
+```
+
+3. Connection in main.go:
+```go
+redisOpts, _ := redis.ParseURL(os.Getenv("REDIS_URL"))
+auth.InitBlocklist(redis.NewClient(redisOpts))
+
+// InitBlockList is from auth package
+var rdb *redis.Client
+
+func InitBlocklist(client *redis.Client) {
+	rdb = client
+}
+```
+
 **At Login**
 At login, a unique `jti` (JWT ID) is generated and embedded in the token:
 ```go

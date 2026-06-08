@@ -39,8 +39,10 @@ users - name, email and pw
 
 logout
 - clear local storage name
-- invalidate expired jwt token (done, but subject to be tested)
+- invalidate expired jwt token 
 - how to invalidate jwt token that is not expired but logged out
+
+(DONE)
 
 5. A method to save your bey
 
