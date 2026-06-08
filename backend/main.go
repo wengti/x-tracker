@@ -55,6 +55,7 @@ func main() {
 	protected.Use(middlewares.VerifyAuthorization())
 	{
 		protected.POST("/auth/logout", handlers.Logout)
+		protected.POST("/matches/1v1", handlers.CreateMatch1v1)
 	}
 
 	r.Run(":8080")

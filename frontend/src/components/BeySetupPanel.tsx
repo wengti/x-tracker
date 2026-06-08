@@ -123,7 +123,13 @@ export default function BeySetupPanel({ label, setup, onSetupChange, duplicatePa
             <span className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
               Is CX?
             </span>
-            <Toggle isOn={setup.isCX} onToggle={() => update("isCX", !setup.isCX)} />
+            <Toggle isOn={setup.isCX} onToggle={() => {
+              if (!setup.isCX) {
+                onSetupChange({ ...setup, isCX: true, blade: "" });
+              } else {
+                onSetupChange({ ...setup, isCX: false, lockChip: "", metalBlade: "", assistBlade: "", overBlade: "" });
+              }
+            }} />
           </div>
 
           {/* Part selectors */}
