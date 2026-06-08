@@ -7,6 +7,7 @@ import (
 
 	"example.com/x-tracker/db"
 	"example.com/x-tracker/handlers"
+	"example.com/x-tracker/middlewares"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -36,6 +37,13 @@ func main() {
 	})
 
 	r.POST("/auth/signup", handlers.SignUp)
+	r.POST("/auth/login", handlers.Login)
+
+	auth := r.Group("/")
+	auth.Use(middlewares.VerifyAuthorization())
+	{
+		// authenticated routes go here
+	}
 
 	r.Run(":8080")
 }
