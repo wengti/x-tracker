@@ -133,7 +133,10 @@ func createTables() error {
 			assist_blade_b3_id INTEGER REFERENCES parts(id),
 			lock_chip_b3_id    INTEGER REFERENCES parts(id),
 			ratchet_b3_id      INTEGER NOT NULL REFERENCES parts(id),
-			bit_b3_id          INTEGER NOT NULL REFERENCES parts(id)
+			bit_b3_id          INTEGER NOT NULL REFERENCES parts(id),
+
+			your_score     INTEGER NOT NULL,
+			opponent_score INTEGER NOT NULL
 		)
 	`)
 	if err != nil {
@@ -160,7 +163,10 @@ func createTables() error {
 			assist_blade_b1_id INTEGER REFERENCES parts(id),
 			lock_chip_b1_id    INTEGER REFERENCES parts(id),
 			ratchet_b1_id      INTEGER NOT NULL REFERENCES parts(id),
-			bit_b1_id          INTEGER NOT NULL REFERENCES parts(id)
+			bit_b1_id          INTEGER NOT NULL REFERENCES parts(id),
+
+			win         INTEGER NOT NULL,
+			finish_type TEXT NOT NULL
 		)
 	`)
 	return err
