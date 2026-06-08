@@ -12,9 +12,11 @@ PART I: one bey only
     * this hits 1v1 match
 - clear button to clear result
 
+done
+
 
 PART II: 3v3 bey
-- same as above (switched on by a toggle)
+- same as above 
 - below scoreboard show type of finish button
 - but extra menu to set ur 3 beyblades
 - each time a finish button is clicked, a row appear below it to show finish history

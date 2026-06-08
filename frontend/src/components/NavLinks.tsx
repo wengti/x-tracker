@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/1vs1", label: "1 vs 1" },
+  { href: "/3vs3", label: "3 vs 3" },
 ];
 
 export default function NavLinks() {

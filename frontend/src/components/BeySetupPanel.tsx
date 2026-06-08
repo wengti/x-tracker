@@ -12,10 +12,32 @@ type Props = {
   label: string;
   setup: BeySetup;
   onSetupChange: (setup: BeySetup) => void;
+  duplicateParts?: Set<string>;
 };
 
-export default function BeySetupPanel({ label, setup, onSetupChange }: Props) {
+const FIELD_LABELS: Partial<Record<keyof BeySetup, string>> = {
+  blade: "Blade",
+  ratchet: "Ratchet",
+  bit: "Bit",
+  lockChip: "Lock Chip",
+  metalBlade: "Metal Blade",
+  assistBlade: "Assist Blade",
+  overBlade: "Over Blade",
+};
+
+function getDuplicatedLabels(setup: BeySetup, duplicateParts: Set<string>): string[] {
+  const fields: (keyof BeySetup)[] = setup.isCX
+    ? ["lockChip", "metalBlade", "assistBlade", "overBlade", "ratchet", "bit"]
+    : ["blade", "ratchet", "bit"];
+  return fields
+    .filter((f) => setup[f] && duplicateParts.has(`${f}:${setup[f]}`))
+    .map((f) => FIELD_LABELS[f]!);
+}
+
+export default function BeySetupPanel({ label, setup, onSetupChange, duplicateParts }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const duplicatedLabels = duplicateParts ? getDuplicatedLabels(setup, duplicateParts) : [];
+  const hasDuplicates = duplicatedLabels.length > 0;
 
   function update<K extends keyof BeySetup>(field: K, value: BeySetup[K]) {
     onSetupChange({ ...setup, [field]: value });
@@ -27,7 +49,7 @@ export default function BeySetupPanel({ label, setup, onSetupChange }: Props) {
   const summary = summaryParts.filter(Boolean).join(" ") || "Not configured";
 
   return (
-    <div className="rounded-xl border border-neutral-800 bg-neutral-900">
+    <div className={`rounded-xl border bg-neutral-900 ${hasDuplicates ? "border-amber-600/60" : "border-neutral-800"}`}>
 
       {/* Accordion header */}
       <button
@@ -40,7 +62,9 @@ export default function BeySetupPanel({ label, setup, onSetupChange }: Props) {
         <div>
           <p className="text-sm font-semibold text-white">{label}</p>
           {!isOpen && (
-            <p className="mt-0.5 text-xs text-neutral-500">{summary}</p>
+            <p className={`mt-0.5 text-xs ${hasDuplicates ? "text-amber-500" : "text-neutral-500"}`}>
+              {hasDuplicates ? `Duplicate: ${duplicatedLabels.join(", ")}` : summary}
+            </p>
           )}
         </div>
         <svg
@@ -59,6 +83,12 @@ export default function BeySetupPanel({ label, setup, onSetupChange }: Props) {
       {/* Expanded content */}
       {isOpen && (
         <div className="space-y-4 border-t border-neutral-800 px-4 py-4">
+
+          {hasDuplicates && (
+            <p className="text-xs text-amber-500">
+              Duplicate parts detected: {duplicatedLabels.join(", ")}
+            </p>
+          )}
 
           {/* isCX toggle */}
           <div className="flex items-center gap-2">
