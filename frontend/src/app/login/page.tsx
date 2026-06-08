@@ -13,7 +13,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -22,6 +22,7 @@ export default function LoginPage() {
       const res = await fetch(apiURL("/auth/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
@@ -32,6 +33,7 @@ export default function LoginPage() {
         return;
       }
 
+      localStorage.setItem("name", data.name);
       router.push("/1vs1");
     } catch {
       setError("Unable to reach the server. Please try again.");

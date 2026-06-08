@@ -33,6 +33,8 @@ users - name, email and pw
 3v3 match - userid, blade a1, overblade a1, ... , blade a2.... , blade a3..., blade b1, overblade b1, ... , blade b2.... , blade b3...score
 1v1 match - userid, match_id (nullable), type match (1v1 or 3v3), blade a, ... blade b, win or loss, finish type
 
+(done)
+
 4. sign up user and login user and logout
 - invalidate expired jwt token
 - how to invalidate jwt token that is not expired but logged out

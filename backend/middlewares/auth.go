@@ -3,7 +3,6 @@ package middlewares
 import (
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -11,13 +10,11 @@ import (
 
 func VerifyAuthorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		rawHeader := c.GetHeader("Authorization")
-		if rawHeader == "" {
+		tokenString, err := c.Cookie("token")
+		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			return
 		}
-
-		tokenString := strings.TrimPrefix(rawHeader, "Bearer ")
 
 		token, err := jwt.Parse(
 			tokenString,

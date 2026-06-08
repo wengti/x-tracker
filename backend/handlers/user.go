@@ -14,6 +14,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+
 func isStrongPassword(p string) bool {
 	if len(p) < 8 {
 		return false
@@ -146,5 +147,15 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": tokenString, "name": name})
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "token",
+		Value:    tokenString,
+		MaxAge:   7 * 24 * 60 * 60,
+		Path:     "/",
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+		Secure:   os.Getenv("COOKIE_SECURE") == "true",
+	})
+
+	c.JSON(http.StatusOK, gin.H{"name": name})
 }

@@ -26,6 +26,7 @@ func main() {
 	corsConfig := cors.DefaultConfig()
 	if origin := os.Getenv("FRONTEND_ORIGIN"); origin != "" {
 		corsConfig.AllowOrigins = []string{origin}
+		corsConfig.AllowCredentials = true
 	} else {
 		corsConfig.AllowAllOrigins = true
 	}
