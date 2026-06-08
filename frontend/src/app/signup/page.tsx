@@ -14,8 +14,7 @@ export default function SignUpPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: SubmitEvent) {
-    e.preventDefault();
+  async function signUp() {
     setError("");
     setLoading(true);
 
@@ -59,7 +58,7 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={(e) => { e.preventDefault(); signUp(); }} className="space-y-4">
           <div className="space-y-1">
             <label className="block text-sm font-medium text-neutral-300">
               Name

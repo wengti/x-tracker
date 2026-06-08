@@ -13,8 +13,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: SubmitEvent) {
-    e.preventDefault();
+  async function login() {
     setError("");
     setLoading(true);
 
@@ -60,7 +59,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={(e) => { e.preventDefault(); login(); }} className="space-y-4">
           <div className="space-y-1">
             <label className="block text-sm font-medium text-neutral-300">
               Email
