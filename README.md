@@ -24,9 +24,11 @@ PART II: 3v3 bey
     * this hits 3v3 match and 1v1 match
 - clear button to clear result
 
+done
+
 
 3. Database
-parts - name, type, image
+parts - name, type, image (done)
 users - name, email and pw
 3v3 match - userid, blade a1, overblade a1, ... , blade a2.... , blade a3..., blade b1, overblade b1, ... , blade b2.... , blade b3...score
 1v1 match - userid, match_id (nullable), type match (1v1 or 3v3), blade a, ... blade b, win or loss, finish type
