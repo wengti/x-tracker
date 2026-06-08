@@ -44,10 +44,15 @@ logout
 
 (DONE)
 
-5. A method to save your bey
+5. fetch selection from the database
+
+6. submit result 1v1 and 3v3 (need to sanitize the data on backend)
 
 
-6. 1v1 results
+7. A method to save your bey
+
+
+8. 1v1 results
 * on top select the bey setups (can be filtered by whether its your or not yours, or both)
     * total percentage of win / loss
     * number and percentage of different finishes (when win, lose)

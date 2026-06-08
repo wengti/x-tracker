@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 const protectedRoutes = ["/1vs1", "/3vs3", "/profile"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isProtected = protectedRoutes.some((route) => pathname.startsWith(route));
 
@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
 
   if (isDev) {
     // In development the frontend and backend run on different ports. The backend's
-    // httpOnly token cookie is scoped to localhost:8080 and invisible to this middleware
+    // httpOnly token cookie is scoped to localhost:8080 and invisible to this proxy
     // on localhost:3000. Instead we check a plain flag cookie set by the frontend JS
     // after login (see login/page.tsx).
     const session = request.cookies.get("x-tracker-session");
@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
     }
   } else {
     // In production both frontend and backend share the same domain, so the
-    // backend's httpOnly token cookie is visible to this middleware directly.
+    // backend's httpOnly token cookie is visible to this proxy directly.
     const token = request.cookies.get("token");
     if (!token) {
       return NextResponse.redirect(new URL("/login", request.url));
