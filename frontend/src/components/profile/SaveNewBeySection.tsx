@@ -3,20 +3,62 @@
 import { useState } from "react";
 import BeySetupPanel from "@/components/BeySetupPanel";
 import { type BeySetup, DEFAULT_BEY_SETUP, getBeyName } from "@/types/bey";
+import { fetchParts, type Part } from "@/data/parts";
+import { apiURL } from "@/lib/api";
+
+function partId(list: Part[], name: string): number | null {
+  return name ? (list.find((p) => p.name === name)?.id ?? null) : null;
+}
 
 export default function SaveNewBeySection() {
   const [isOpen, setIsOpen] = useState(false);
   const [setup, setSetup] = useState<BeySetup>(DEFAULT_BEY_SETUP);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const beyName = getBeyName(setup);
   const isEmpty = beyName === "Not configured";
 
-  function handleSave() {
-    // TODO: PUT /profile/bey
+  async function handleSave() {
+    setIsSaving(true);
+    setSaveError(null);
+    try {
+      const catalog = await fetchParts();
+      const body = {
+        blade_id:        partId(catalog.blade,        setup.blade),
+        metal_blade_id:  partId(catalog.metal_blade,  setup.metalBlade),
+        over_blade_id:   partId(catalog.over_blade,   setup.overBlade),
+        assist_blade_id: partId(catalog.assist_blade, setup.assistBlade),
+        lock_chip_id:    partId(catalog.lock_chip,    setup.lockChip),
+        ratchet_id:      partId(catalog.ratchet,      setup.ratchet),
+        bit_id:          partId(catalog.bit,          setup.bit),
+      };
+
+      const res = await fetch(apiURL("/profile/bey"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setSaveError(data.error ?? "Failed to save.");
+        return;
+      }
+
+      setSetup(DEFAULT_BEY_SETUP);
+      setIsOpen(false);
+    } catch {
+      setSaveError("Unable to reach the server. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   function handleClear() {
     setSetup(DEFAULT_BEY_SETUP);
+    setSaveError(null);
   }
 
   return (
@@ -54,13 +96,19 @@ export default function SaveNewBeySection() {
         <div className="space-y-4 border-t border-neutral-800 px-4 py-4">
           <BeySetupPanel label="Bey Setup" setup={setup} onSetupChange={setSetup} collapsible={false} />
 
+          {saveError && (
+            <p className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-2.5 text-sm text-red-400">
+              {saveError}
+            </p>
+          )}
+
           <div className="flex gap-3">
             <button
               onClick={handleSave}
-              disabled={isEmpty}
+              disabled={isEmpty || isSaving}
               className="flex-1 rounded-xl bg-blue-500 py-3 font-semibold text-white transition-all hover:bg-blue-400 active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
             >
-              Save
+              {isSaving ? "Saving..." : "Save"}
             </button>
             <button
               onClick={handleClear}

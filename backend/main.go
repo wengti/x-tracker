@@ -57,6 +57,7 @@ func main() {
 		protected.POST("/auth/logout", handlers.Logout)
 		protected.POST("/matches/1v1", handlers.CreateMatch1v1)
 		protected.POST("/matches/3v3", handlers.CreateMatch3v3)
+		protected.POST("/profile/bey", handlers.SaveBey)
 	}
 
 	r.Run(":8080")
