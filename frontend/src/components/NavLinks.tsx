@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import { apiURL } from "@/lib/api";
 
 const links = [
-  { href: "/1vs1", label: "1 vs 1" },
-  { href: "/3vs3", label: "3 vs 3" },
+  { href: "/1vs1",      label: "1 vs 1"    },
+  { href: "/3vs3",      label: "3 vs 3"    },
+  { href: "/profile",   label: "Your Beys"},
+  { href: "/bey-stats", label: "Bey Stats" },
 ];
 
 export default function NavLinks() {
@@ -51,9 +53,6 @@ export default function NavLinks() {
             {label}
           </Link>
         ))}
-        <Link href="/profile" className={navLinkClass("/profile")}>
-          Your Beys
-        </Link>
         <button onClick={logout} className="text-neutral-400 transition-colors hover:text-white">
           Log out
         </button>
@@ -83,12 +82,6 @@ export default function NavLinks() {
               </Link>
             ))}
             <div className="my-1.5 border-t border-neutral-800" />
-            <Link
-              href="/profile"
-              className={`block px-4 py-2 text-sm font-medium ${navLinkClass("/profile")}`}
-            >
-              Your Bey
-            </Link>
             <button
               onClick={logout}
               className="block w-full px-4 py-2 text-left text-sm font-medium text-neutral-400 hover:text-white"
