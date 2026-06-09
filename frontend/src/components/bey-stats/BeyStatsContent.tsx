@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type BeySetup, DEFAULT_BEY_SETUP } from "@/types/bey";
 import { fetchParts, type Part, type PartsCatalog } from "@/data/parts";
 import {
@@ -105,6 +105,11 @@ export default function BeyStatsContent() {
   const [activeTab, setActiveTab]       = useState<"1v1" | "3v3" | "total">("total");
   const [historyPage, setHistoryPage]   = useState(0);
 
+  const [oppFilter, setOppFilter] = useState("");
+  const [oppQuery, setOppQuery]   = useState("");
+  const [oppDropOpen, setOppDropOpen] = useState(false);
+  const oppDropRef = useRef<HTMLDivElement>(null);
+
   // Load catalog on mount and resolve URL params → setup names
   useEffect(() => {
     fetchParts().then((c) => {
@@ -130,11 +135,24 @@ export default function BeyStatsContent() {
     setStatsLoading(true);
     setStatsError(null);
     setHistoryPage(0);
+    setOppFilter("");
+    setOppQuery("");
     fetchBeyStats(params)
       .then((data) => { setRounds(data.rounds); setGames(data.games); })
       .catch(() => setStatsError("Failed to load stats."))
       .finally(() => setStatsLoading(false));
   }, [params]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (oppDropRef.current && !oppDropRef.current.contains(e.target as Node)) {
+        setOppDropOpen(false);
+        setOppQuery(oppFilter);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [oppFilter]);
 
   // When user changes the setup via the panel, sync URL
   function handleSetupChange(next: BeySetup) {
@@ -144,8 +162,21 @@ export default function BeyStatsContent() {
 
   // ── Derived stats ──────────────────────────────────────────────────────────
 
-  const rounds1v1 = rounds.filter((r) => r.match3v3Id === null);
-  const rounds3v3 = rounds.filter((r) => r.match3v3Id !== null);
+  const opponentOptions = catalog
+    ? [...new Set(rounds.map((r) => oppName(r, catalog)).filter((n) => n !== "—"))].sort()
+    : [];
+
+  const filteredRounds = oppFilter
+    ? rounds.filter((r) => oppName(r, catalog) === oppFilter)
+    : rounds;
+
+  const filteredMatch3v3Ids = new Set(
+    filteredRounds.filter((r) => r.match3v3Id !== null).map((r) => r.match3v3Id!)
+  );
+  const filteredGames = oppFilter ? games.filter((g) => filteredMatch3v3Ids.has(g.id)) : games;
+
+  const rounds1v1 = filteredRounds.filter((r) => r.match3v3Id === null);
+  const rounds3v3 = filteredRounds.filter((r) => r.match3v3Id !== null);
 
   function statsFor(rs: BeyStatRound[]) {
     const wins = rs.filter((r) => r.win).length;
@@ -158,10 +189,10 @@ export default function BeyStatsContent() {
     };
   }
 
-  const stats = { "1v1": statsFor(rounds1v1), "3v3": statsFor(rounds3v3), "total": statsFor(rounds) };
+  const stats = { "1v1": statsFor(rounds1v1), "3v3": statsFor(rounds3v3), "total": statsFor(filteredRounds) };
 
   const hasSetup    = setup.bit !== "";
-  const activeRounds = activeTab === "1v1" ? rounds1v1 : activeTab === "3v3" ? rounds3v3 : rounds;
+  const activeRounds = activeTab === "1v1" ? rounds1v1 : activeTab === "3v3" ? rounds3v3 : filteredRounds;
   const totalHistPages = Math.ceil(activeRounds.length / HISTORY_PAGE_SIZE);
   const historyRows = activeRounds.slice(historyPage * HISTORY_PAGE_SIZE, (historyPage + 1) * HISTORY_PAGE_SIZE);
 
@@ -201,6 +232,56 @@ export default function BeyStatsContent() {
 
             {!statsLoading && !statsError && (
               <>
+                {/* Opponent filter */}
+                {rounds.length > 0 && (
+                  <div ref={oppDropRef} className="relative">
+                    <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wide text-neutral-500">
+                      Opponent
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={oppQuery}
+                        onChange={(e) => { setOppQuery(e.target.value); setOppDropOpen(true); }}
+                        onFocus={() => setOppDropOpen(true)}
+                        placeholder="All opponents"
+                        className="w-full rounded-lg border border-neutral-700 bg-neutral-800 py-2 pl-3 pr-7 text-sm text-white placeholder:text-neutral-600 focus:border-blue-500 focus:outline-none"
+                      />
+                      {oppFilter && (
+                        <button
+                          type="button"
+                          onMouseDown={(e) => { e.preventDefault(); setOppFilter(""); setOppQuery(""); setOppDropOpen(false); }}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white"
+                          aria-label="Clear"
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                    {oppDropOpen && (
+                      <ul className="scrollbar-blue absolute left-0 top-full z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-neutral-700 bg-neutral-900 shadow-xl">
+                        {opponentOptions.filter((n) => n.toLowerCase().includes(oppQuery.toLowerCase())).length > 0 ? (
+                          opponentOptions
+                            .filter((n) => n.toLowerCase().includes(oppQuery.toLowerCase()))
+                            .map((name) => (
+                              <li key={name}>
+                                <button
+                                  type="button"
+                                  onMouseDown={() => { setOppFilter(name); setOppQuery(name); setOppDropOpen(false); }}
+                                  className="w-full px-3 py-2 text-left text-sm text-neutral-300 hover:bg-neutral-800 hover:text-white"
+                                >
+                                  {name}
+                                </button>
+                              </li>
+                            ))
+                        ) : (
+                          <li className="px-3 py-2 text-sm text-neutral-600">No opponents found</li>
+                        )}
+                      </ul>
+                    )}
+                  </div>
+                )}
+
                 {/* Tabs */}
                 <div className="flex gap-1 rounded-xl border border-neutral-800 bg-neutral-900 p-1">
                   {(["total", "1v1", "3v3"] as const).map((tab) => (
@@ -232,12 +313,12 @@ export default function BeyStatsContent() {
                           <p className="mt-1 text-2xl font-bold text-white">{s.winRate}%</p>
                         </div>
                         {activeTab !== "1v1" && (() => {
-                          const gameWins = games.filter((g) => g.yourScore > g.opponentScore).length;
+                          const gameWins = filteredGames.filter((g) => g.yourScore > g.opponentScore).length;
                           return (
                             <>
                               <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
                                 <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Games</p>
-                                <p className="mt-1 text-2xl font-bold text-white">{games.length}</p>
+                                <p className="mt-1 text-2xl font-bold text-white">{filteredGames.length}</p>
                               </div>
                               <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
                                 <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Games Won</p>
@@ -245,7 +326,7 @@ export default function BeyStatsContent() {
                               </div>
                               <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
                                 <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Game Win Rate</p>
-                                <p className="mt-1 text-2xl font-bold text-white">{gameWinRate(games)}%</p>
+                                <p className="mt-1 text-2xl font-bold text-white">{gameWinRate(filteredGames)}%</p>
                               </div>
                             </>
                           );
