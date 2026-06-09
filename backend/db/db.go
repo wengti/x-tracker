@@ -161,6 +161,24 @@ func createTables() error {
 		return err
 	}
 
+	// Expression index so NULLs in nullable part columns are treated as equal
+	// (plain UNIQUE constraints in SQLite consider NULL != NULL).
+	_, err = DB.Exec(`
+		CREATE UNIQUE INDEX IF NOT EXISTS idx_saved_beys_unique ON saved_beys (
+			user_id,
+			COALESCE(blade_id,        0),
+			COALESCE(metal_blade_id,  0),
+			COALESCE(over_blade_id,   0),
+			COALESCE(assist_blade_id, 0),
+			COALESCE(lock_chip_id,    0),
+			COALESCE(ratchet_id,      0),
+			bit_id
+		)
+	`)
+	if err != nil {
+		return err
+	}
+
 	_, err = DB.Exec(`
 		CREATE TABLE IF NOT EXISTS matches_1v1 (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,

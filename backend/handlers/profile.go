@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
 	"example.com/x-tracker/db"
 	"github.com/gin-gonic/gin"
@@ -133,6 +134,10 @@ func SaveBey(c *gin.Context) {
 		) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 	`, userID, req.BladeID, req.MetalBladeID, req.OverBladeID, req.AssistBladeID, req.LockChipID, req.RatchetID, req.BitID)
 	if err != nil {
+		if strings.Contains(err.Error(), "UNIQUE constraint failed") {
+			c.JSON(http.StatusConflict, gin.H{"error": "this bey setup is already saved"})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save bey"})
 		return
 	}
