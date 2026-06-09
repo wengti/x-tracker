@@ -50,7 +50,7 @@ function getDuplicatedLabels(setup: BeySetup, duplicateParts: Set<string>): stri
 }
 
 export default function BeySetupPanel({ label, setup, onSetupChange, duplicateParts, collapsible = true, enableSavedBeys = false }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [parts, setParts] = useState<Parts>(EMPTY);
   const [savedBeys, setSavedBeys] = useState<SavedBey[]>([]);
   const [beyQuery, setBeyQuery] = useState("");
