@@ -59,17 +59,34 @@ export default function PartSelector({ label, value, onChange, options }: Props)
         <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wide text-neutral-500">
           {label}
         </label>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setOpen(true);
-          }}
-          onFocus={() => setOpen(true)}
-          placeholder="Select or type…"
-          className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-white placeholder:text-neutral-600 focus:border-blue-500 focus:outline-none"
-        />
+        <div className="relative">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setOpen(true);
+            }}
+            onFocus={() => setOpen(true)}
+            placeholder="Select or type…"
+            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 py-2 pl-3 pr-7 text-sm text-white placeholder:text-xs placeholder:text-neutral-600 focus:border-blue-500 focus:outline-none"
+          />
+          {value && (
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                onChange("");
+                setQuery("");
+                setOpen(false);
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white"
+              aria-label="Clear"
+            >
+              ×
+            </button>
+          )}
+        </div>
         {open && (
           <ul className="scrollbar-blue absolute left-0 top-full z-10 mt-1 max-h-48 min-w-full w-max overflow-y-auto rounded-lg border border-neutral-700 bg-neutral-900 shadow-xl">
             {filtered.length > 0 ? (

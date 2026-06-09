@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from "react";
-import type { BeySetup } from "@/types/bey";
+import { type BeySetup, DEFAULT_BEY_SETUP } from "@/types/bey";
 import PartSelector from "./PartSelector";
 import { fetchParts, type Part } from "@/data/parts";
 import { fetchSavedBeys, savedBeyName, refreshSavedBeysCache, type SavedBey } from "@/data/savedBeys";
@@ -195,18 +195,27 @@ export default function BeySetupPanel({ label, setup, onSetupChange, duplicatePa
         </p>
       )}
 
-      {/* isCX toggle */}
-      <div className="flex items-center gap-2">
-        <span className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
-          Is CX?
-        </span>
-        <Toggle isOn={setup.isCX} onToggle={() => {
-          if (!setup.isCX) {
-            onSetupChange({ ...setup, isCX: true, blade: "" });
-          } else {
-            onSetupChange({ ...setup, isCX: false, lockChip: "", metalBlade: "", assistBlade: "", overBlade: "" });
-          }
-        }} />
+      {/* isCX toggle + Clear */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
+            Is CX?
+          </span>
+          <Toggle isOn={setup.isCX} onToggle={() => {
+            if (!setup.isCX) {
+              onSetupChange({ ...setup, isCX: true, blade: "" });
+            } else {
+              onSetupChange({ ...setup, isCX: false, lockChip: "", metalBlade: "", assistBlade: "", overBlade: "" });
+            }
+          }} />
+        </div>
+        <button
+          type="button"
+          onClick={() => onSetupChange(DEFAULT_BEY_SETUP)}
+          className="text-xs text-neutral-500 transition-colors hover:text-white"
+        >
+          Clear
+        </button>
       </div>
 
       {/* Part selectors */}
