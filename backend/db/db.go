@@ -85,7 +85,8 @@ func createTables() error {
 		CREATE TABLE IF NOT EXISTS matches_3v3 (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-			user_id INTEGER NOT NULL REFERENCES users(id),
+			user_id    INTEGER NOT NULL REFERENCES users(id),
+			created_at TEXT    NOT NULL DEFAULT (datetime('now')),
 
 			blade_a1_id        INTEGER REFERENCES parts(id),
 			metal_blade_a1_id  INTEGER REFERENCES parts(id),
@@ -183,7 +184,8 @@ func createTables() error {
 		CREATE TABLE IF NOT EXISTS matches_1v1 (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-			user_id INTEGER NOT NULL REFERENCES users(id),
+			user_id    INTEGER NOT NULL REFERENCES users(id),
+			created_at TEXT    NOT NULL DEFAULT (datetime('now')),
 
 			blade_a1_id        INTEGER REFERENCES parts(id),
 			metal_blade_a1_id  INTEGER REFERENCES parts(id),

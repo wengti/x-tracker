@@ -52,20 +52,31 @@ logout
 
 7. A method to save your bey
 go under profile
+(Done)
 
-8. 1v1 results
-* on top select the bey setups
-    * total percentage of win / loss
-    * number and percentage of different finishes (when win, lose)
-    * all match history (should have the option to delete match history, only available for non 3v3 match)
-    * below has many many different box, all box has the same bey but different setup
-        * within each box:
-            * select opponent setups (available based on the selected bey setups)
-            * percentage of win / loss
-            * number and percentage of different finishes (when win, lose)
-            * match history
 
-7. 3v3 results (game profile)
-* match history (expandable to see the details)
+8. Need to update table to show the time created of the match
+
+
+9. Blade Stats page 
+
+this page should be linkable from saved blade, so use path parameter
+
+on top: search feature
+
+for each bey
+* win loss percentage - in 1v1, 3v3 and total
+* type of finishes percentage
+* all match history
+
+next: search feature for the opponent blades - to restrict the match history
+* win loss percentage - in 1v1, 3v3 and total
+* type of finishes
+* all match history
+
+10. Personal Stats Page
 * win rate or loss rate
 * win rate or loss rate of each bey
+* match history (expandable to see the details)
+
+
