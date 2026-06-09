@@ -85,6 +85,28 @@ func GetSavedBeys(c *gin.Context) {
 	c.JSON(http.StatusOK, beys)
 }
 
+func DeleteSavedBey(c *gin.Context) {
+	userID := c.MustGet("userId").(int64)
+
+	id := c.Param("id")
+
+	result, err := db.DB.Exec(
+		`DELETE FROM saved_beys WHERE id = ? AND user_id = ?`, id, userID,
+	)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete bey"})
+		return
+	}
+
+	rows, _ := result.RowsAffected()
+	if rows == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "bey not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
+}
+
 type saveBeyRequest struct {
 	BladeID       *int64 `json:"blade_id"`
 	MetalBladeID  *int64 `json:"metal_blade_id"`

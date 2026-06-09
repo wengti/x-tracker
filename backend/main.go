@@ -59,6 +59,7 @@ func main() {
 		protected.POST("/matches/3v3", handlers.CreateMatch3v3)
 		protected.GET("/profile/beys", handlers.GetSavedBeys)
 		protected.POST("/profile/bey", handlers.SaveBey)
+		protected.DELETE("/profile/bey/:id", handlers.DeleteSavedBey)
 	}
 
 	r.Run(":8080")
