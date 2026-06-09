@@ -1,28 +1,10 @@
 'use client'
 
 import { useState } from "react";
+import { type SavedBey, savedBeyName, fetchSavedBeys, invalidateSavedBeysCache } from "@/data/savedBeys";
 import { apiURL } from "@/lib/api";
 
-type SavedBey = {
-  id: number;
-  isCX: boolean;
-  blade: string;       bladeImage: string;
-  metalBlade: string;  metalBladeImage: string;
-  overBlade: string;   overBladeImage: string;
-  assistBlade: string; assistBladeImage: string;
-  lockChip: string;    lockChipImage: string;
-  ratchet: string;     ratchetImage: string;
-  bit: string;         bitImage: string;
-};
-
 const PAGE_SIZE = 5;
-
-function beyName(bey: SavedBey): string {
-  const parts = bey.isCX
-    ? [bey.lockChip, bey.metalBlade, bey.overBlade, bey.assistBlade, bey.ratchet, bey.bit]
-    : [bey.blade, bey.ratchet, bey.bit];
-  return parts.filter(Boolean).join(" ") || "Unnamed Bey";
-}
 
 function PartChip({ name, imageUrl }: { name: string; imageUrl: string }) {
   if (!name) return null;
@@ -49,12 +31,8 @@ export default function SavedBeysSection() {
     setIsLoading(true);
     setFetchError(null);
     try {
-      const res = await fetch(apiURL("/profile/beys"), { credentials: "include" });
-      if (!res.ok) {
-        setFetchError("Failed to load saved beys.");
-        return;
-      }
-      const data: SavedBey[] = await res.json();
+      invalidateSavedBeysCache();
+      const data = await fetchSavedBeys();
       setBeys(data);
     } catch {
       setFetchError("Unable to reach the server.");
@@ -94,7 +72,7 @@ export default function SavedBeysSection() {
   }
 
   const filteredBeys = search.trim()
-    ? beys.filter((b) => beyName(b).toLowerCase().includes(search.toLowerCase()))
+    ? beys.filter((b) => savedBeyName(b).toLowerCase().includes(search.toLowerCase()))
     : beys;
   const totalPages = Math.ceil(filteredBeys.length / PAGE_SIZE);
   const pageBeys = filteredBeys.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
@@ -172,7 +150,7 @@ export default function SavedBeysSection() {
               {pageBeys.map((bey) => (
                 <div key={bey.id} className="rounded-xl border border-neutral-700 bg-neutral-800/40 p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm font-semibold text-white">{beyName(bey)}</p>
+                    <p className="text-sm font-semibold text-white">{savedBeyName(bey)}</p>
                     <button
                       type="button"
                       onClick={() => handleDelete(bey.id)}

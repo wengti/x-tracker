@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { BeySetup } from "@/types/bey";
 import PartSelector from "./PartSelector";
 import { fetchParts, type Part } from "@/data/parts";
+import { fetchSavedBeys, savedBeyName, type SavedBey } from "@/data/savedBeys";
 
 type Parts = {
   blades: Part[];
@@ -26,6 +27,7 @@ type Props = {
   onSetupChange: (setup: BeySetup) => void;
   duplicateParts?: Set<string>;
   collapsible?: boolean;
+  enableSavedBeys?: boolean;
 };
 
 const FIELD_LABELS: Partial<Record<keyof BeySetup, string>> = {
@@ -47,9 +49,13 @@ function getDuplicatedLabels(setup: BeySetup, duplicateParts: Set<string>): stri
     .map((f) => FIELD_LABELS[f]!);
 }
 
-export default function BeySetupPanel({ label, setup, onSetupChange, duplicateParts, collapsible = true }: Props) {
+export default function BeySetupPanel({ label, setup, onSetupChange, duplicateParts, collapsible = true, enableSavedBeys = false }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [parts, setParts] = useState<Parts>(EMPTY);
+  const [savedBeys, setSavedBeys] = useState<SavedBey[]>([]);
+  const [beyQuery, setBeyQuery] = useState("");
+  const [beyOpen, setBeyOpen] = useState(false);
+  const beyContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchParts()
@@ -65,6 +71,23 @@ export default function BeySetupPanel({ label, setup, onSetupChange, duplicatePa
       .catch(console.error);
   }, []);
 
+  useEffect(() => {
+    if (!enableSavedBeys) return;
+    fetchSavedBeys().then(setSavedBeys).catch(console.error);
+  }, [enableSavedBeys]);
+
+  useEffect(() => {
+    if (!enableSavedBeys) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (beyContainerRef.current && !beyContainerRef.current.contains(e.target as Node)) {
+        setBeyOpen(false);
+        setBeyQuery("");
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [enableSavedBeys]);
+
   const duplicatedLabels = duplicateParts ? getDuplicatedLabels(setup, duplicateParts) : [];
   const hasDuplicates = duplicatedLabels.length > 0;
 
@@ -77,8 +100,62 @@ export default function BeySetupPanel({ label, setup, onSetupChange, duplicatePa
     : [setup.blade, setup.ratchet, setup.bit];
   const summary = summaryParts.filter(Boolean).join(" ") || "Not configured";
 
+  const filteredSavedBeys = savedBeys.filter((b) =>
+    savedBeyName(b).toLowerCase().includes(beyQuery.toLowerCase())
+  );
+
   const content = (
     <div className="space-y-4 px-4 py-4">
+
+      {enableSavedBeys && (
+        <div ref={beyContainerRef} className="relative">
+          <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wide text-neutral-500">
+            Load Saved Bey
+          </label>
+          <input
+            type="text"
+            value={beyQuery}
+            onChange={(e) => { setBeyQuery(e.target.value); setBeyOpen(true); }}
+            onFocus={() => setBeyOpen(true)}
+            placeholder="Select a saved bey…"
+            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-white placeholder:text-neutral-600 focus:border-blue-500 focus:outline-none"
+          />
+          {beyOpen && (
+            <ul className="scrollbar-blue absolute left-0 top-full z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-neutral-700 bg-neutral-900 shadow-xl">
+              {filteredSavedBeys.length > 0 ? (
+                filteredSavedBeys.map((bey) => (
+                  <li key={bey.id}>
+                    <button
+                      type="button"
+                      onMouseDown={() => {
+                        onSetupChange({
+                          isCX: bey.isCX,
+                          blade: bey.blade,
+                          lockChip: bey.lockChip,
+                          metalBlade: bey.metalBlade,
+                          assistBlade: bey.assistBlade,
+                          overBlade: bey.overBlade,
+                          ratchet: bey.ratchet,
+                          bit: bey.bit,
+                        });
+                        setBeyQuery("");
+                        setBeyOpen(false);
+                      }}
+                      className="w-full px-3 py-2 text-left text-sm text-neutral-300 hover:bg-neutral-800 hover:text-white"
+                    >
+                      {savedBeyName(bey)}
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <li className="px-3 py-2 text-sm text-neutral-600">
+                  {savedBeys.length === 0 ? "No saved beys" : "No matches"}
+                </li>
+              )}
+            </ul>
+          )}
+        </div>
+      )}
 
       {hasDuplicates && (
         <p className="text-xs text-amber-500">

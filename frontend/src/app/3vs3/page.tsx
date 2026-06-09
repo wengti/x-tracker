@@ -153,6 +153,7 @@ export default function ThreeVsThreePage() {
                   setup={setup}
                   onSetupChange={(s) => updateYouSetup(i, s)}
                   duplicateParts={youDuplicates}
+                  enableSavedBeys
                 />
               ))}
             </div>
@@ -164,6 +165,7 @@ export default function ThreeVsThreePage() {
                   setup={setup}
                   onSetupChange={(s) => updateOpponentSetup(i, s)}
                   duplicateParts={opponentDuplicates}
+                  enableSavedBeys
                 />
               ))}
             </div>

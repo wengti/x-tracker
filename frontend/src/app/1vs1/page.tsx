@@ -108,11 +108,13 @@ export default function OneVsOnePage() {
               label="Your Bey"
               setup={youSetup}
               onSetupChange={setYouSetup}
+              enableSavedBeys
             />
             <BeySetupPanel
               label="Opponent's Bey"
               setup={opponentSetup}
               onSetupChange={setOpponentSetup}
+              enableSavedBeys
             />
           </div>
         </section>

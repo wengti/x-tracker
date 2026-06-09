@@ -5,6 +5,7 @@ import BeySetupPanel from "@/components/BeySetupPanel";
 import { type BeySetup, DEFAULT_BEY_SETUP, getBeyName } from "@/types/bey";
 import { fetchParts, type Part } from "@/data/parts";
 import { apiURL } from "@/lib/api";
+import { invalidateSavedBeysCache } from "@/data/savedBeys";
 
 function partId(list: Part[], name: string): number | null {
   return name ? (list.find((p) => p.name === name)?.id ?? null) : null;
@@ -47,6 +48,7 @@ export default function SaveNewBeySection() {
         return;
       }
 
+      invalidateSavedBeysCache();
       setSetup(DEFAULT_BEY_SETUP);
     } catch {
       setSaveError("Unable to reach the server. Please try again.");
