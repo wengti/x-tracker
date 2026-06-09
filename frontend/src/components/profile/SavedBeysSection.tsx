@@ -43,6 +43,7 @@ export default function SavedBeysSection() {
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
 
   async function loadBeys() {
     setIsLoading(true);
@@ -92,8 +93,11 @@ export default function SavedBeysSection() {
     }
   }
 
-  const totalPages = Math.ceil(beys.length / PAGE_SIZE);
-  const pageBeys = beys.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const filteredBeys = search.trim()
+    ? beys.filter((b) => beyName(b).toLowerCase().includes(search.toLowerCase()))
+    : beys;
+  const totalPages = Math.ceil(filteredBeys.length / PAGE_SIZE);
+  const pageBeys = filteredBeys.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   return (
     <div className={`rounded-xl border bg-neutral-900 ${isOpen ? "border-neutral-700" : "border-neutral-800"}`}>
@@ -127,7 +131,14 @@ export default function SavedBeysSection() {
       {isOpen && (
         <div className="border-t border-neutral-800 px-4 py-4">
 
-          <div className="mb-3 flex justify-end">
+          <div className="mb-3 flex items-center gap-2">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(0); }}
+              placeholder="Search beys..."
+              className="flex-1 rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-1.5 text-sm text-white placeholder-neutral-500 outline-none focus:border-neutral-500"
+            />
             <button
               type="button"
               onClick={loadBeys}
