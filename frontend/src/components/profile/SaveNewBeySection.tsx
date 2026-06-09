@@ -5,14 +5,14 @@ import BeySetupPanel from "@/components/BeySetupPanel";
 import { type BeySetup, DEFAULT_BEY_SETUP, getBeyName } from "@/types/bey";
 import { fetchParts, type Part } from "@/data/parts";
 import { apiURL } from "@/lib/api";
-import { invalidateSavedBeysCache } from "@/data/savedBeys";
+import { refreshSavedBeysCache } from "@/data/savedBeys";
 
 function partId(list: Part[], name: string): number | null {
   return name ? (list.find((p) => p.name === name)?.id ?? null) : null;
 }
 
 export default function SaveNewBeySection() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [setup, setSetup] = useState<BeySetup>(DEFAULT_BEY_SETUP);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -48,7 +48,7 @@ export default function SaveNewBeySection() {
         return;
       }
 
-      invalidateSavedBeysCache();
+      refreshSavedBeysCache();
       setSetup(DEFAULT_BEY_SETUP);
     } catch {
       setSaveError("Unable to reach the server. Please try again.");

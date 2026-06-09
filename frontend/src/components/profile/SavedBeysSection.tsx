@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from "react";
-import { type SavedBey, savedBeyName, fetchSavedBeys, invalidateSavedBeysCache } from "@/data/savedBeys";
+import { useState, useEffect } from "react";
+import { type SavedBey, savedBeyName, refreshSavedBeysCache, removeSavedBeyFromCache } from "@/data/savedBeys";
 import { apiURL } from "@/lib/api";
 
 const PAGE_SIZE = 5;
@@ -19,7 +19,7 @@ function PartChip({ name, imageUrl }: { name: string; imageUrl: string }) {
 }
 
 export default function SavedBeysSection() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [beys, setBeys] = useState<SavedBey[]>([]);
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,12 +27,13 @@ export default function SavedBeysSection() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [search, setSearch] = useState("");
 
+  useEffect(() => { loadBeys(); }, []);
+
   async function loadBeys() {
     setIsLoading(true);
     setFetchError(null);
     try {
-      invalidateSavedBeysCache();
-      const data = await fetchSavedBeys();
+      const data = await refreshSavedBeysCache();
       setBeys(data);
     } catch {
       setFetchError("Unable to reach the server.");
@@ -59,6 +60,7 @@ export default function SavedBeysSection() {
         setFetchError(data.error ?? "Failed to delete bey.");
         return;
       }
+      removeSavedBeyFromCache(id);
       const updated = beys.filter((b) => b.id !== id);
       setBeys(updated);
       // If deletion emptied the current page, step back one

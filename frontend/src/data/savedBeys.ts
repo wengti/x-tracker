@@ -29,6 +29,11 @@ export async function fetchSavedBeys(): Promise<SavedBey[]> {
   return cache!;
 }
 
-export function invalidateSavedBeysCache(): void {
+export async function refreshSavedBeysCache(): Promise<SavedBey[]> {
   cache = null;
+  return fetchSavedBeys();
+}
+
+export function removeSavedBeyFromCache(id: number): void {
+  if (cache) cache = cache.filter((b) => b.id !== id);
 }

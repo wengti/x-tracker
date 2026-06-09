@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import type { BeySetup } from "@/types/bey";
 import PartSelector from "./PartSelector";
 import { fetchParts, type Part } from "@/data/parts";
-import { fetchSavedBeys, savedBeyName, type SavedBey } from "@/data/savedBeys";
+import { fetchSavedBeys, savedBeyName, refreshSavedBeysCache, type SavedBey } from "@/data/savedBeys";
 
 type Parts = {
   blades: Part[];
@@ -55,6 +55,7 @@ export default function BeySetupPanel({ label, setup, onSetupChange, duplicatePa
   const [savedBeys, setSavedBeys] = useState<SavedBey[]>([]);
   const [beyQuery, setBeyQuery] = useState("");
   const [beyOpen, setBeyOpen] = useState(false);
+  const [savedBeysLoading, setSavedBeysLoading] = useState(false);
   const beyContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -71,9 +72,21 @@ export default function BeySetupPanel({ label, setup, onSetupChange, duplicatePa
       .catch(console.error);
   }, []);
 
+  async function loadSavedBeys(forceRefresh = false) {
+    setSavedBeysLoading(true);
+    try {
+      const data = forceRefresh ? await refreshSavedBeysCache() : await fetchSavedBeys();
+      setSavedBeys(data);
+    } catch {
+      // silently fail — user can retry with the refresh button
+    } finally {
+      setSavedBeysLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (!enableSavedBeys) return;
-    fetchSavedBeys().then(setSavedBeys).catch(console.error);
+    loadSavedBeys();
   }, [enableSavedBeys]);
 
   useEffect(() => {
@@ -112,14 +125,33 @@ export default function BeySetupPanel({ label, setup, onSetupChange, duplicatePa
           <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wide text-neutral-500">
             Load Saved Bey
           </label>
-          <input
-            type="text"
-            value={beyQuery}
-            onChange={(e) => { setBeyQuery(e.target.value); setBeyOpen(true); }}
-            onFocus={() => setBeyOpen(true)}
-            placeholder="Select a saved bey…"
-            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-white placeholder:text-neutral-600 focus:border-blue-500 focus:outline-none"
-          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={beyQuery}
+              onChange={(e) => { setBeyQuery(e.target.value); setBeyOpen(true); }}
+              onFocus={() => setBeyOpen(true)}
+              placeholder="Select a saved bey…"
+              className="flex-1 rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-white placeholder:text-neutral-600 focus:border-blue-500 focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => loadSavedBeys(true)}
+              disabled={savedBeysLoading}
+              aria-label="Refresh saved beys"
+              className="rounded-lg border border-neutral-700 p-2 text-neutral-500 transition-colors hover:border-neutral-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              <svg
+                className={`h-4 w-4 ${savedBeysLoading ? "animate-spin" : ""}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </button>
+          </div>
           {beyOpen && (
             <ul className="scrollbar-blue absolute left-0 top-full z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-neutral-700 bg-neutral-900 shadow-xl">
               {filteredSavedBeys.length > 0 ? (
