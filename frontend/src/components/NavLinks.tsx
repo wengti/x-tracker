@@ -52,7 +52,7 @@ export default function NavLinks() {
           </Link>
         ))}
         <Link href="/profile" className={navLinkClass("/profile")}>
-          {name}
+          Your Beys
         </Link>
         <button onClick={logout} className="text-neutral-400 transition-colors hover:text-white">
           Log out
@@ -87,7 +87,7 @@ export default function NavLinks() {
               href="/profile"
               className={`block px-4 py-2 text-sm font-medium ${navLinkClass("/profile")}`}
             >
-              {name}
+              Your Bey
             </Link>
             <button
               onClick={logout}

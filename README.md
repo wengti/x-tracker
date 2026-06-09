@@ -56,6 +56,7 @@ go under profile
 
 
 8. Need to update table to show the time created of the match
+(Done)
 
 
 9. Blade Stats page 
