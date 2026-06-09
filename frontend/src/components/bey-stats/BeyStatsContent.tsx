@@ -52,13 +52,13 @@ function FinishTag({ ft, suffix }: { ft: string; suffix?: string }) {
   );
 }
 
-function FinishBar({ dist }: { dist: Record<string, number> }) {
+function FinishBar({ dist }: { dist: import("@/data/beyStats").FinishDist }) {
   const entries = Object.entries(dist);
   if (entries.length === 0) return <span className="text-neutral-600 text-xs">—</span>;
   return (
     <div className="flex flex-wrap gap-2">
-      {entries.map(([ft, pct]) => (
-        <FinishTag key={ft} ft={ft} suffix={` ${pct}%`} />
+      {entries.map(([ft, { pct, count }]) => (
+        <FinishTag key={ft} ft={ft} suffix={` ${pct}% (${count})`} />
       ))}
     </div>
   );
@@ -192,12 +192,21 @@ export default function BeyStatsContent() {
   const rounds1v1 = filteredRounds.filter((r) => r.match3v3Id === null);
   const rounds3v3 = filteredRounds.filter((r) => r.match3v3Id !== null);
 
+  const ROUND_POINTS: Record<string, number> = {
+    "Spin Finish": 1, "Burst Finish": 2, "Over Finish": 2, "Extreme Finish": 3,
+  };
+
   function statsFor(rs: BeyStatRound[]) {
     const wins = rs.filter((r) => r.win).length;
+    const totalPoints = rs.reduce((acc, r) => {
+      const pts = ROUND_POINTS[r.finishType] ?? 0;
+      return acc + (r.win ? pts : -pts);
+    }, 0);
     return {
       total:    rs.length,
       wins,
       winRate:  winRate(rs),
+      totalPoints,
       winDist:  finishDist(rs.filter((r) => r.win)),
       loseDist: finishDist(rs.filter((r) => !r.win)),
     };
@@ -311,41 +320,147 @@ export default function BeyStatsContent() {
                 {/* Stat cards */}
                 {(() => {
                   const s = stats[activeTab];
+                  const setupLabel = (setup.isCX
+                    ? [setup.lockChip, setup.metalBlade, setup.overBlade, setup.assistBlade, setup.ratchet, setup.bit]
+                    : [setup.blade, setup.ratchet, setup.bit]
+                  ).filter(Boolean).join(" ");
+                  const oppRound = oppFilter ? rounds.find((r) => oppName(r, catalog) === oppFilter) ?? null : null;
                   return (
                     <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 space-y-4">
-                      <div className="grid grid-cols-3 gap-4">
-                        <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Rounds</p>
-                          <p className="mt-1 text-2xl font-bold text-white">{s.total}</p>
+                      {setupLabel && (
+                        <div>
+                          <p className="text-sm font-semibold text-white">{setupLabel}</p>
+                          {oppRound && (
+                            <p className="mt-0.5 text-xs text-neutral-500">
+                              vs{" "}
+                              <Link href={oppStatsUrl(oppRound)} className="text-neutral-400 hover:text-blue-400 transition-colors">
+                                {oppFilter}
+                              </Link>
+                            </p>
+                          )}
                         </div>
-                        <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Rounds Won</p>
-                          <p className="mt-1 text-2xl font-bold text-white">{s.wins}</p>
+                      )}
+                      <div>
+                        <p className="mb-2 text-xs font-semibold text-neutral-500">Rounds</p>
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                          <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
+                            <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Total</p>
+                            <p className="mt-1 text-2xl font-bold text-white">{s.total}</p>
+                          </div>
+                          <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
+                            <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Won</p>
+                            <p className="mt-1 text-2xl font-bold text-white">{s.wins}</p>
+                          </div>
+                          <div className="col-span-2 rounded-lg border border-neutral-800 bg-neutral-800/40 p-3 sm:col-span-1">
+                            <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Win Rate</p>
+                            <p className="mt-1 text-2xl font-bold text-white">{s.winRate}%</p>
+                          </div>
                         </div>
-                        <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Round Win Rate</p>
-                          <p className="mt-1 text-2xl font-bold text-white">{s.winRate}%</p>
-                        </div>
-                        {activeTab !== "1v1" && (() => {
-                          const gameWins = filteredGames.filter((g) => g.yourScore > g.opponentScore).length;
-                          return (
-                            <>
+                      </div>
+
+                      {activeTab !== "1v1" && (() => {
+                        const gameWins = filteredGames.filter((g) => g.yourScore > g.opponentScore).length;
+                        return (
+                          <div>
+                            <p className="mb-2 text-xs font-semibold text-neutral-500">Games</p>
+                            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                               <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
-                                <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Games</p>
+                                <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Total</p>
                                 <p className="mt-1 text-2xl font-bold text-white">{filteredGames.length}</p>
                               </div>
                               <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
-                                <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Games Won</p>
+                                <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Won</p>
                                 <p className="mt-1 text-2xl font-bold text-white">{gameWins}</p>
                               </div>
-                              <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
-                                <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Game Win Rate</p>
+                              <div className="col-span-2 rounded-lg border border-neutral-800 bg-neutral-800/40 p-3 sm:col-span-1">
+                                <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Win Rate</p>
                                 <p className="mt-1 text-2xl font-bold text-white">{gameWinRate(filteredGames)}%</p>
                               </div>
-                            </>
-                          );
-                        })()}
-                      </div>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {s.total > 0 && (() => {
+                        const avgRound = s.totalPoints / s.total;
+                        const avgGame  = filteredGames.length > 0 ? s.totalPoints / filteredGames.length : null;
+                        const fmt = (n: number) => (n >= 0 ? "+" : "") + n.toFixed(1).replace(".0", "");
+                        const color = (n: number) => n >= 0 ? "text-green-400" : "text-red-400";
+                        return (
+                          <div>
+                            <p className="mb-2 text-xs font-semibold text-neutral-500">Points +/-</p>
+                            <div className="grid grid-cols-3 gap-4">
+                              <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
+                                <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Total</p>
+                                <p className={`mt-1 text-2xl font-bold ${color(s.totalPoints)}`}>
+                                  {s.totalPoints >= 0 ? "+" : ""}{s.totalPoints}
+                                </p>
+                              </div>
+                              <div className={`rounded-lg border border-neutral-800 bg-neutral-800/40 p-3 ${activeTab === "1v1" || avgGame === null ? "col-span-2" : ""}`}>
+                                <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Avg / Round</p>
+                                <p className={`mt-1 text-2xl font-bold ${color(avgRound)}`}>{fmt(avgRound)}</p>
+                              </div>
+                              {activeTab !== "1v1" && avgGame !== null && (
+                                <div className="rounded-lg border border-neutral-800 bg-neutral-800/40 p-3">
+                                  <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">Avg / Game</p>
+                                  <p className={`mt-1 text-2xl font-bold ${color(avgGame)}`}>{fmt(avgGame)}</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {!oppFilter && s.total > 0 && (() => {
+                        type OppEntry = { name: string; round: BeyStatRound; count: number; points: number };
+                        const map = new Map<string, OppEntry>();
+                        for (const r of activeRounds) {
+                          const name = oppName(r, catalog);
+                          if (name === "—") continue;
+                          const entry = map.get(name) ?? { name, round: r, count: 0, points: 0 };
+                          const pts = ROUND_POINTS[r.finishType] ?? 0;
+                          entry.count += 1;
+                          entry.points += r.win ? pts : -pts;
+                          map.set(name, entry);
+                        }
+                        const all = [...map.values()];
+                        if (all.length < 2) return null;
+                        const avg = (e: OppEntry) => e.points / e.count;
+                        const cmpBest  = (a: OppEntry, b: OppEntry) =>
+                          avg(b) !== avg(a) ? avg(b) - avg(a) : b.count - a.count;
+                        const cmpWorst = (a: OppEntry, b: OppEntry) =>
+                          avg(a) !== avg(b) ? avg(a) - avg(b) : b.count - a.count;
+                        const byBest  = [...all].sort(cmpBest).slice(0, 3);
+                        const byWorst = [...all].sort(cmpWorst).slice(0, 3);
+                        const fmtAvg = (n: number) => (n >= 0 ? "+" : "") + n.toFixed(1).replace(".0", "");
+                        const ptColor = (n: number) => n >= 0 ? "text-green-400" : "text-red-400";
+                        const Row = ({ entry, rank }: { entry: OppEntry; rank: number }) => (
+                          <div className="flex items-center gap-3 py-2">
+                            <span className="w-4 shrink-0 text-xs font-bold text-neutral-600">{rank}</span>
+                            <Link href={oppStatsUrl(entry.round)} className="min-w-0 flex-1 wrap-break-word text-sm text-neutral-300 hover:text-blue-400 transition-colors">
+                              {entry.name}
+                            </Link>
+                            <span className="shrink-0 text-xs text-neutral-500">{entry.count}R</span>
+                            <span className={`w-10 shrink-0 text-right text-sm font-semibold ${ptColor(avg(entry))}`}>{fmtAvg(avg(entry))}</span>
+                          </div>
+                        );
+                        return (
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                              <p className="mb-1 text-xs font-semibold text-neutral-500">Best Against</p>
+                              <div className="divide-y divide-neutral-800/60">
+                                {byBest.map((e, i) => <Row key={e.name} entry={e} rank={i + 1} />)}
+                              </div>
+                            </div>
+                            <div>
+                              <p className="mb-1 text-xs font-semibold text-neutral-500">Worst Against</p>
+                              <div className="divide-y divide-neutral-800/60">
+                                {byWorst.map((e, i) => <Row key={e.name} entry={e} rank={i + 1} />)}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })()}
 
                       {s.total > 0 ? (
                         <div className="space-y-3">

@@ -37,7 +37,7 @@ export async function fetchBeyStats(params: URLSearchParams): Promise<BeyStatsRe
 
 const FINISH_TYPES = ["Spin Finish", "Burst Finish", "Over Finish", "Extreme Finish"] as const;
 
-export type FinishDist = Record<string, number>; // finish type → percentage (0–100)
+export type FinishDist = Record<string, { count: number; pct: number }>;
 
 export function winRate(rounds: BeyStatRound[]): number {
   if (rounds.length === 0) return 0;
@@ -50,7 +50,7 @@ export function finishDist(rounds: BeyStatRound[]): FinishDist {
   for (const r of rounds) counts[r.finishType] = (counts[r.finishType] ?? 0) + 1;
   const result: FinishDist = {};
   for (const ft of FINISH_TYPES) {
-    if (counts[ft]) result[ft] = Math.round((counts[ft] / rounds.length) * 100);
+    if (counts[ft]) result[ft] = { count: counts[ft], pct: Math.round((counts[ft] / rounds.length) * 100) };
   }
   return result;
 }
