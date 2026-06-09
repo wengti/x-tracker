@@ -1,5 +1,6 @@
 'use client'
 
+import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { type BeySetup, DEFAULT_BEY_SETUP } from "@/types/bey";
@@ -77,6 +78,19 @@ function formatDate(s: string): string {
   );
 }
 
+function oppStatsUrl(r: BeyStatRound): string {
+  const params = new URLSearchParams();
+  const add = (key: string, id: number | null) => { if (id) params.set(key, String(id)); };
+  add("blade_id",        r.oppBladeId);
+  add("metal_blade_id",  r.oppMetalBladeId);
+  add("over_blade_id",   r.oppOverBladeId);
+  add("assist_blade_id", r.oppAssistBladeId);
+  add("lock_chip_id",    r.oppLockChipId);
+  add("ratchet_id",      r.oppRatchetId);
+  add("bit_id",          r.oppBitId);
+  return "/bey-stats?" + params.toString();
+}
+
 function oppName(r: BeyStatRound, catalog: PartsCatalog | null): string {
   if (!catalog) return "—";
   const find = (list: Part[], id: number | null) =>
@@ -110,7 +124,7 @@ export default function BeyStatsContent() {
   const [oppDropOpen, setOppDropOpen] = useState(false);
   const oppDropRef = useRef<HTMLDivElement>(null);
 
-  // Load catalog on mount and resolve URL params → setup names
+  // Resolve URL params → setup names whenever params change (fetchParts is cached)
   useEffect(() => {
     fetchParts().then((c) => {
       setCatalog(c);
@@ -127,7 +141,7 @@ export default function BeyStatsContent() {
         bit:         find(c.bit,          params.get("bit_id")),
       });
     }).catch(() => {});
-  }, []);
+  }, [params]);
 
   // Fetch stats whenever URL params change and bit_id is present
   useEffect(() => {
@@ -364,7 +378,9 @@ export default function BeyStatsContent() {
                             {r.win ? "W" : "L"}
                           </span>
                           <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm text-neutral-300">{oppName(r, catalog)}</p>
+                            <Link href={oppStatsUrl(r)} className="truncate text-sm text-neutral-300 hover:text-blue-400 transition-colors">
+                              {oppName(r, catalog)}
+                            </Link>
                             <p className="mt-0.5 text-xs text-neutral-500">
                               {showGameCol && r.match3v3Id !== null && (
                                 <>Game {gameNumberMap.get(r.match3v3Id)}<span className="mx-1">·</span></>
@@ -406,7 +422,11 @@ export default function BeyStatsContent() {
                                   {r.match3v3Id !== null ? "3v3" : "1v1"}
                                 </span>
                               </td>
-                              <td className="py-2 pr-4 text-neutral-300">{oppName(r, catalog)}</td>
+                              <td className="py-2 pr-4">
+                                <Link href={oppStatsUrl(r)} className="text-neutral-300 hover:text-blue-400 transition-colors">
+                                  {oppName(r, catalog)}
+                                </Link>
+                              </td>
                               <td className="py-2 pr-4">
                                 <span className={`rounded-md px-2 py-0.5 text-xs font-semibold ${r.win ? "bg-green-500/15 text-green-400" : "bg-red-500/15 text-red-400"}`}>
                                   {r.win ? "W" : "L"}

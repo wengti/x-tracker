@@ -1,13 +1,28 @@
 'use client'
 
-import React, { useState } from "react";
+import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import Scoreboard from "@/components/Scoreboard";
 import FinishButtons from "@/components/FinishButtons";
 import BeySetupPanel from "@/components/BeySetupPanel";
 import BeyPicker from "@/components/BeyPicker";
 import { type BeySetup, DEFAULT_BEY_SETUP, getBeyName, findDuplicateParts } from "@/types/bey";
-import { fetchParts, type Part } from "@/data/parts";
+import { fetchParts, type Part, type PartsCatalog } from "@/data/parts";
 import { apiURL } from "@/lib/api";
+
+function buildStatsUrl(setup: BeySetup, catalog: PartsCatalog): string {
+  const find = (list: Part[], name: string) => list.find((p) => p.name === name)?.id;
+  const params = new URLSearchParams();
+  const add = (key: string, id: number | undefined) => { if (id) params.set(key, String(id)); };
+  add("blade_id",        find(catalog.blade,        setup.blade));
+  add("metal_blade_id",  find(catalog.metal_blade,  setup.metalBlade));
+  add("over_blade_id",   find(catalog.over_blade,   setup.overBlade));
+  add("assist_blade_id", find(catalog.assist_blade, setup.assistBlade));
+  add("lock_chip_id",    find(catalog.lock_chip,    setup.lockChip));
+  add("ratchet_id",      find(catalog.ratchet,      setup.ratchet));
+  add("bit_id",          find(catalog.bit,          setup.bit));
+  return "/bey-stats?" + params.toString();
+}
 
 function partId(list: Part[], name: string): number | null {
   return name ? (list.find((p) => p.name === name)?.id ?? null) : null;
@@ -38,9 +53,12 @@ const EMPTY_SETUPS = (): BeySetup[] => [
 ];
 
 export default function ThreeVsThreePage() {
+  const [catalog, setCatalog] = useState<PartsCatalog | null>(null);
   const [score, setScore] = useState<Score>({ you: 0, opponent: 0 });
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [isYourFriend, setIsYourFriend] = useState(false);
+
+  useEffect(() => { fetchParts().then(setCatalog).catch(() => {}); }, []);
   const [youSetups, setYouSetups] = useState<BeySetup[]>(EMPTY_SETUPS());
   const [opponentSetups, setOpponentSetups] = useState<BeySetup[]>(EMPTY_SETUPS());
   const [selectedYouBey, setSelectedYouBey] = useState(0);
@@ -258,10 +276,14 @@ export default function ThreeVsThreePage() {
                       {entry.finishType} (+{FINISH_POINTS[entry.finishType] ?? 0})
                     </Row>
                     <Row label={isYourFriend ? "Your Friend's Bey" : "Your Bey"}>
-                      {entry.youBeyName}
+                      {catalog ? (
+                        <Link href={buildStatsUrl(entry.youSetup, catalog)} className="hover:text-blue-400 transition-colors">{entry.youBeyName}</Link>
+                      ) : entry.youBeyName}
                     </Row>
                     <Row label="Opponent's Bey">
-                      {entry.opponentBeyName}
+                      {catalog ? (
+                        <Link href={buildStatsUrl(entry.opponentSetup, catalog)} className="hover:text-blue-400 transition-colors">{entry.opponentBeyName}</Link>
+                      ) : entry.opponentBeyName}
                     </Row>
                   </div>
                 ))}
@@ -289,8 +311,16 @@ export default function ThreeVsThreePage() {
                         <td className="px-4 py-3 text-neutral-300">
                           {entry.finishType} (+{FINISH_POINTS[entry.finishType] ?? 0})
                         </td>
-                        <td className="px-4 py-3 text-neutral-300">{entry.youBeyName}</td>
-                        <td className="px-4 py-3 text-neutral-300">{entry.opponentBeyName}</td>
+                        <td className="px-4 py-3 text-neutral-300">
+                          {catalog ? (
+                            <Link href={buildStatsUrl(entry.youSetup, catalog)} className="hover:text-blue-400 transition-colors">{entry.youBeyName}</Link>
+                          ) : entry.youBeyName}
+                        </td>
+                        <td className="px-4 py-3 text-neutral-300">
+                          {catalog ? (
+                            <Link href={buildStatsUrl(entry.opponentSetup, catalog)} className="hover:text-blue-400 transition-colors">{entry.opponentBeyName}</Link>
+                          ) : entry.opponentBeyName}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

@@ -1,8 +1,25 @@
 'use client'
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { type SavedBey, savedBeyName, refreshSavedBeysCache, removeSavedBeyFromCache } from "@/data/savedBeys";
+import { fetchParts, type PartsCatalog } from "@/data/parts";
 import { apiURL } from "@/lib/api";
+
+function buildStatsUrl(bey: SavedBey, catalog: PartsCatalog): string {
+  const find = (list: { id: number; name: string }[], name: string) =>
+    list.find((p) => p.name === name)?.id;
+  const params = new URLSearchParams();
+  const add = (key: string, id: number | undefined) => { if (id) params.set(key, String(id)); };
+  add("blade_id",        find(catalog.blade,        bey.blade));
+  add("metal_blade_id",  find(catalog.metal_blade,  bey.metalBlade));
+  add("over_blade_id",   find(catalog.over_blade,   bey.overBlade));
+  add("assist_blade_id", find(catalog.assist_blade, bey.assistBlade));
+  add("lock_chip_id",    find(catalog.lock_chip,    bey.lockChip));
+  add("ratchet_id",      find(catalog.ratchet,      bey.ratchet));
+  add("bit_id",          find(catalog.bit,          bey.bit));
+  return "/bey-stats?" + params.toString();
+}
 
 const PAGE_SIZE = 5;
 
@@ -21,13 +38,17 @@ function PartChip({ name, imageUrl }: { name: string; imageUrl: string }) {
 export default function SavedBeysSection() {
   const [isOpen, setIsOpen] = useState(true);
   const [beys, setBeys] = useState<SavedBey[]>([]);
+  const [catalog, setCatalog] = useState<PartsCatalog | null>(null);
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [search, setSearch] = useState("");
 
-  useEffect(() => { loadBeys(); }, []);
+  useEffect(() => {
+    loadBeys();
+    fetchParts().then(setCatalog).catch(() => {});
+  }, []);
 
   async function loadBeys() {
     setIsLoading(true);
@@ -152,7 +173,13 @@ export default function SavedBeysSection() {
               {pageBeys.map((bey) => (
                 <div key={bey.id} className="rounded-xl border border-neutral-700 bg-neutral-800/40 p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm font-semibold text-white">{savedBeyName(bey)}</p>
+                    {catalog ? (
+                      <Link href={buildStatsUrl(bey, catalog)} className="text-sm font-semibold text-white hover:text-blue-400 transition-colors">
+                        {savedBeyName(bey)}
+                      </Link>
+                    ) : (
+                      <p className="text-sm font-semibold text-white">{savedBeyName(bey)}</p>
+                    )}
                     <button
                       type="button"
                       onClick={() => handleDelete(bey.id)}
