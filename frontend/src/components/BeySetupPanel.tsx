@@ -25,6 +25,7 @@ type Props = {
   setup: BeySetup;
   onSetupChange: (setup: BeySetup) => void;
   duplicateParts?: Set<string>;
+  collapsible?: boolean;
 };
 
 const FIELD_LABELS: Partial<Record<keyof BeySetup, string>> = {
@@ -46,7 +47,7 @@ function getDuplicatedLabels(setup: BeySetup, duplicateParts: Set<string>): stri
     .map((f) => FIELD_LABELS[f]!);
 }
 
-export default function BeySetupPanel({ label, setup, onSetupChange, duplicateParts }: Props) {
+export default function BeySetupPanel({ label, setup, onSetupChange, duplicateParts, collapsible = true }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [parts, setParts] = useState<Parts>(EMPTY);
 
@@ -75,6 +76,61 @@ export default function BeySetupPanel({ label, setup, onSetupChange, duplicatePa
     ? [setup.lockChip, setup.metalBlade, setup.overBlade, setup.assistBlade, setup.ratchet, setup.bit]
     : [setup.blade, setup.ratchet, setup.bit];
   const summary = summaryParts.filter(Boolean).join(" ") || "Not configured";
+
+  const content = (
+    <div className="space-y-4 px-4 py-4">
+
+      {hasDuplicates && (
+        <p className="text-xs text-amber-500">
+          Duplicate parts detected: {duplicatedLabels.join(", ")}
+        </p>
+      )}
+
+      {/* isCX toggle */}
+      <div className="flex items-center gap-2">
+        <span className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
+          Is CX?
+        </span>
+        <Toggle isOn={setup.isCX} onToggle={() => {
+          if (!setup.isCX) {
+            onSetupChange({ ...setup, isCX: true, blade: "" });
+          } else {
+            onSetupChange({ ...setup, isCX: false, lockChip: "", metalBlade: "", assistBlade: "", overBlade: "" });
+          }
+        }} />
+      </div>
+
+      {/* Part selectors */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {setup.isCX ? (
+          <>
+            <PartSelector label="Lock Chip"    options={parts.lockChips}    value={setup.lockChip}    onChange={(v) => update("lockChip", v)}    />
+            <PartSelector label="Metal Blade"  options={parts.metalBlades}  value={setup.metalBlade}  onChange={(v) => update("metalBlade", v)}  />
+            <PartSelector label="Assist Blade" options={parts.assistBlades} value={setup.assistBlade} onChange={(v) => update("assistBlade", v)} />
+            <PartSelector label="Over Blade"   options={parts.overBlades}   value={setup.overBlade}   onChange={(v) => update("overBlade", v)}   />
+            <PartSelector label="Ratchet"      options={parts.ratchets}     value={setup.ratchet}     onChange={(v) => update("ratchet", v)}     />
+            <PartSelector label="Bit"          options={parts.bits}         value={setup.bit}         onChange={(v) => update("bit", v)}         />
+          </>
+        ) : (
+          <>
+            <PartSelector label="Blade"   options={parts.blades}   value={setup.blade}   onChange={(v) => update("blade", v)}   />
+            <PartSelector label="Ratchet" options={parts.ratchets} value={setup.ratchet} onChange={(v) => update("ratchet", v)} />
+            <PartSelector label="Bit"     options={parts.bits}     value={setup.bit}     onChange={(v) => update("bit", v)}     />
+          </>
+        )}
+      </div>
+
+    </div>
+  );
+
+  if (!collapsible) {
+    return (
+      <div className={`rounded-xl border bg-neutral-900 ${hasDuplicates ? "border-amber-600/60" : "border-neutral-800"}`}>
+        <p className="px-4 pt-4 text-sm font-semibold text-white">{label}</p>
+        {content}
+      </div>
+    );
+  }
 
   return (
     <div className={`rounded-xl border bg-neutral-900 ${hasDuplicates ? "border-amber-600/60" : "border-neutral-800"}`}>
@@ -110,48 +166,8 @@ export default function BeySetupPanel({ label, setup, onSetupChange, duplicatePa
 
       {/* Expanded content */}
       {isOpen && (
-        <div className="space-y-4 border-t border-neutral-800 px-4 py-4">
-
-          {hasDuplicates && (
-            <p className="text-xs text-amber-500">
-              Duplicate parts detected: {duplicatedLabels.join(", ")}
-            </p>
-          )}
-
-          {/* isCX toggle */}
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
-              Is CX?
-            </span>
-            <Toggle isOn={setup.isCX} onToggle={() => {
-              if (!setup.isCX) {
-                onSetupChange({ ...setup, isCX: true, blade: "" });
-              } else {
-                onSetupChange({ ...setup, isCX: false, lockChip: "", metalBlade: "", assistBlade: "", overBlade: "" });
-              }
-            }} />
-          </div>
-
-          {/* Part selectors */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {setup.isCX ? (
-              <>
-                <PartSelector label="Lock Chip"    options={parts.lockChips}    value={setup.lockChip}    onChange={(v) => update("lockChip", v)}    />
-                <PartSelector label="Metal Blade"  options={parts.metalBlades}  value={setup.metalBlade}  onChange={(v) => update("metalBlade", v)}  />
-                <PartSelector label="Assist Blade" options={parts.assistBlades} value={setup.assistBlade} onChange={(v) => update("assistBlade", v)} />
-                <PartSelector label="Over Blade"   options={parts.overBlades}   value={setup.overBlade}   onChange={(v) => update("overBlade", v)}   />
-                <PartSelector label="Ratchet"      options={parts.ratchets}     value={setup.ratchet}     onChange={(v) => update("ratchet", v)}     />
-                <PartSelector label="Bit"          options={parts.bits}         value={setup.bit}         onChange={(v) => update("bit", v)}         />
-              </>
-            ) : (
-              <>
-                <PartSelector label="Blade"   options={parts.blades}   value={setup.blade}   onChange={(v) => update("blade", v)}   />
-                <PartSelector label="Ratchet" options={parts.ratchets} value={setup.ratchet} onChange={(v) => update("ratchet", v)} />
-                <PartSelector label="Bit"     options={parts.bits}     value={setup.bit}     onChange={(v) => update("bit", v)}     />
-              </>
-            )}
-          </div>
-
+        <div className="border-t border-neutral-800">
+          {content}
         </div>
       )}
     </div>

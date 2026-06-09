@@ -144,6 +144,24 @@ func createTables() error {
 	}
 
 	_, err = DB.Exec(`
+		CREATE TABLE IF NOT EXISTS saved_beys (
+			id      INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER NOT NULL REFERENCES users(id),
+
+			blade_id        INTEGER REFERENCES parts(id),
+			metal_blade_id  INTEGER REFERENCES parts(id),
+			over_blade_id   INTEGER REFERENCES parts(id),
+			assist_blade_id INTEGER REFERENCES parts(id),
+			lock_chip_id    INTEGER REFERENCES parts(id),
+			ratchet_id      INTEGER REFERENCES parts(id),
+			bit_id          INTEGER NOT NULL REFERENCES parts(id)
+		)
+	`)
+	if err != nil {
+		return err
+	}
+
+	_, err = DB.Exec(`
 		CREATE TABLE IF NOT EXISTS matches_1v1 (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 

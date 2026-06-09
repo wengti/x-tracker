@@ -45,15 +45,16 @@ logout
 (DONE)
 
 5. fetch selection from the database
+(Done)
 
 6. submit result 1v1 and 3v3 (need to sanitize the data on backend)
-
+(Done)
 
 7. A method to save your bey
-
+go under profile
 
 8. 1v1 results
-* on top select the bey setups (can be filtered by whether its your or not yours, or both)
+* on top select the bey setups
     * total percentage of win / loss
     * number and percentage of different finishes (when win, lose)
     * all match history (should have the option to delete match history, only available for non 3v3 match)
