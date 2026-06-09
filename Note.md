@@ -217,3 +217,39 @@ func IsBlocked(jti string) bool {
 	return n > 0
 }
 ```
+
+
+# SQL Query explanation
+```sql
+rows, err := db.DB.Query(`
+		SELECT
+			sb.id,
+			COALESCE(bl.name,  '') AS blade,
+			COALESCE(mb.name,  '') AS metal_blade,
+			COALESCE(ob.name,  '') AS over_blade,
+			COALESCE(ab.name,  '') AS assist_blade,
+			COALESCE(lc.name,  '') AS lock_chip,
+			COALESCE(r.name,   '') AS ratchet,
+			COALESCE(bit.name, '') AS bit
+		FROM saved_beys sb
+		LEFT JOIN parts bl  ON sb.blade_id        = bl.id
+		LEFT JOIN parts mb  ON sb.metal_blade_id   = mb.id
+		LEFT JOIN parts ob  ON sb.over_blade_id    = ob.id
+		LEFT JOIN parts ab  ON sb.assist_blade_id  = ab.id
+		LEFT JOIN parts lc  ON sb.lock_chip_id     = lc.id
+		LEFT JOIN parts r   ON sb.ratchet_id       = r.id
+		LEFT JOIN parts bit ON sb.bit_id           = bit.id
+		WHERE sb.user_id = ?
+	`, userID)
+```
+This query fetches a user's saved Beyblades with the readable NAME of each part.
+
+Why "parts" is joined 7 times: each Bey slot (blade, metal_blade, etc.) stores a part_id pointing into the same `parts` table. To look up 7 different names from one table, we join it 7 times — each with its own ALIAS so we can tell them apart.
+
+Alias syntax: `JOIN parts bl` means "use the parts table, nickname it `bl`".
+(Same as `JOIN parts AS bl`; the AS is optional.) Then `bl.name` reads from that copy.
+bl=blade  mb=metal_blade  ob=over_blade  ab=assist_blade  lc=lock_chip  r=ratchet  bit=bit
+sb = saved_beys (the main table)
+
+LEFT JOIN keeps the Bey even if a slot is empty; COALESCE(x.name, '') turns the
+resulting NULL into '' so Go scans a clean string. `?` = userID (parameterized, injection-safe).

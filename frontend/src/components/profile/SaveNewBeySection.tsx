@@ -48,7 +48,6 @@ export default function SaveNewBeySection() {
       }
 
       setSetup(DEFAULT_BEY_SETUP);
-      setIsOpen(false);
     } catch {
       setSaveError("Unable to reach the server. Please try again.");
     } finally {

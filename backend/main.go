@@ -57,6 +57,7 @@ func main() {
 		protected.POST("/auth/logout", handlers.Logout)
 		protected.POST("/matches/1v1", handlers.CreateMatch1v1)
 		protected.POST("/matches/3v3", handlers.CreateMatch3v3)
+		protected.GET("/profile/beys", handlers.GetSavedBeys)
 		protected.POST("/profile/bey", handlers.SaveBey)
 	}
 
