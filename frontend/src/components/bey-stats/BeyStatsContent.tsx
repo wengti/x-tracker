@@ -27,6 +27,7 @@ function buildUrl(setup: BeySetup, catalog: PartsCatalog): string {
   add("lock_chip_id",    setup.lockChip,    catalog.lock_chip);
   add("ratchet_id",      setup.ratchet,     catalog.ratchet);
   add("bit_id",          setup.bit,         catalog.bit);
+  if (setup.isCX) params.set("is_cx", "1");
   return params.toString() ? "?" + params.toString() : "";
 }
 
@@ -131,7 +132,7 @@ export default function BeyStatsContent() {
       const find = (list: Part[], id: string | null) =>
         id ? (list.find((x) => x.id === Number(id))?.name ?? "") : "";
       setSetup({
-        isCX:        !!params.get("lock_chip_id"),
+        isCX:        !!params.get("lock_chip_id") || params.get("is_cx") === "1",
         blade:       find(c.blade,        params.get("blade_id")),
         metalBlade:  find(c.metal_blade,  params.get("metal_blade_id")),
         overBlade:   find(c.over_blade,   params.get("over_blade_id")),
