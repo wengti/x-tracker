@@ -25,6 +25,8 @@ function toParts(arr: RawPart[] = []): Part[] {
   return arr.map(({ id, name, image_url }) => ({ id, name, imageUrl: image_url }));
 }
 
+export function clearPartsCache(): void { cache = null; }
+
 export async function fetchParts(): Promise<PartsCatalog> {
   if (cache) return cache;
   const res = await fetch(apiURL("/parts"));

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { apiURL } from "@/lib/api";
+import { clearPartsCache } from "@/data/parts";
+import { clearSavedBeysCache } from "@/data/savedBeys";
 
 const links = [
   { href: "/1vs1",          label: "1 vs 1"        },
@@ -29,6 +31,8 @@ export default function NavLinks() {
 
   async function logout() {
     await fetch(apiURL("/auth/logout"), { method: "POST", credentials: "include" });
+    clearPartsCache();
+    clearSavedBeysCache();
     localStorage.removeItem("x-tracker-name");
     // Dev-only: clear the session flag cookie set at login (see login/page.tsx)
     if (process.env.NEXT_PUBLIC_API_URL) {

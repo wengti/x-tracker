@@ -21,6 +21,8 @@ export function savedBeyName(bey: SavedBey): string {
 
 let cache: SavedBey[] | null = null;
 
+export function clearSavedBeysCache(): void { cache = null; }
+
 export async function fetchSavedBeys(): Promise<SavedBey[]> {
   if (cache) return cache;
   const res = await fetch(apiURL("/profile/beys"), { credentials: "include" });
