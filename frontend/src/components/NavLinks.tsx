@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 import { apiURL } from "@/lib/api";
 
 const links = [
-  { href: "/1vs1",      label: "1 vs 1"    },
-  { href: "/3vs3",      label: "3 vs 3"    },
-  { href: "/profile",   label: "Your Beys"},
-  { href: "/bey-stats", label: "Bey Stats" },
+  { href: "/1vs1",          label: "1 vs 1"        },
+  { href: "/3vs3",          label: "3 vs 3"        },
+  { href: "/profile",       label: "Your Beys"     },
+  { href: "/bey-stats",     label: "Bey Stats"     },
+  { href: "/player-stats",  label: "Player Stats"  },
 ];
 
 export default function NavLinks() {

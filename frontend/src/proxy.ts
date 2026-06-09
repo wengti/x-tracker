@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const protectedRoutes = ["/1vs1", "/3vs3", "/profile", "/bey-stats"];
+const protectedRoutes = ["/1vs1", "/3vs3", "/profile", "/bey-stats", "/player-stats"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -29,5 +29,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/1vs1/:path*", "/3vs3/:path*", "/profile/:path*", "/bey-stats", "/bey-stats/:path*"],
+  matcher: ["/", "/1vs1/:path*", "/3vs3/:path*", "/profile/:path*", "/bey-stats", "/bey-stats/:path*", "/player-stats", "/player-stats/:path*"],
 };
