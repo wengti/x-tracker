@@ -4,7 +4,7 @@ X Tracker is a battle tracking tool for Beyblade X players to log matches, analy
 ![Landing Page](demo/1.png)
 
 ## Get Started
-* Live Implementation: http://\<your-ec2-public-ip\>
+* Live Implementation: http://54.210.231.44
 * Demo Video: https://www.youtube.com/watch?v=jagw5ZUJa2I
 
 ## Tech Stack
@@ -63,8 +63,8 @@ In Beyblade X, the finish type of each round determines how many points are awar
 | ------ | ------ | ----------- |
 | Spin Finish | +1 | Opponent's Bey stops spinning first |
 | Burst Finish | +2 | Opponent's Bey physically bursts apart |
-| Over Finish | +2 | Opponent's Bey is knocked out of the stadium |
-| Extreme Finish | +3 | Opponent's Bey exits via the X-Line rail surrounding the stadium |
+| Over Finish | +2 | Opponent's Bey is knocked into the small pockets of the stadium |
+| Extreme Finish | +3 | Opponent's Bey is knocked out of the stadium through the large stadium |
 
 In a 3v3 match, each player fields 3 Beys and points accumulate across rounds until one player reaches the winning threshold.
 
